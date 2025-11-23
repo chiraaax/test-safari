@@ -23,6 +23,7 @@ const Rentals = () => {
           _id: '1',
           vehicleName: 'Toyota Land Cruiser',
           vehicleType: 'SUV',
+          image: '/images/land-cruiser.jpg', // Added image path
           description: 'Perfect for safari adventures with excellent off-road capabilities. Spacious interior with comfortable seating for up to 7 passengers. Equipped with modern amenities.',
           pricePerDay: 12000,
           capacity: 7,
@@ -35,6 +36,7 @@ const Rentals = () => {
           _id: '2',
           vehicleName: 'Mitsubishi Montero',
           vehicleType: 'SUV',
+          image: '/images/montero.avif', // Added image path
           description: 'Spacious and reliable vehicle for family safari trips. Excellent ground clearance and powerful engine for challenging terrains.',
           pricePerDay: 10000,
           capacity: 8,
@@ -47,6 +49,7 @@ const Rentals = () => {
           _id: '3',
           vehicleName: 'Toyota Hiace Van',
           vehicleType: 'Van',
+          image: '/images/hiace.webp', // Added image path
           description: 'Ideal for large groups with comfortable seating and ample luggage space. Perfect for extended safari tours with multiple destinations.',
           pricePerDay: 15000,
           capacity: 12,
@@ -59,6 +62,7 @@ const Rentals = () => {
           _id: '4',
           vehicleName: 'Safari Open-Top Jeep',
           vehicleType: 'Jeep',
+          image: '/images/open-top-jeep.jpg', // Added image path
           description: 'Open-top jeep for the ultimate safari experience. Perfect for photography enthusiasts and wildlife viewing. Unobstructed views of nature.',
           pricePerDay: 8000,
           capacity: 6,
@@ -71,6 +75,7 @@ const Rentals = () => {
           _id: '5',
           vehicleName: 'Luxury Range Rover',
           vehicleType: 'Luxury',
+          image: '/images/range-rover.jpg', // Added image path
           description: 'Premium luxury vehicle for discerning travelers. Ultimate comfort and style for your safari adventure with all modern amenities.',
           pricePerDay: 25000,
           capacity: 5,
@@ -200,22 +205,36 @@ const Rentals = () => {
               animate="visible"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {filteredRentals.map((rental, index) => (
+              {filteredRentals.map((rental) => (
                 <motion.div
                   key={rental._id}
                   variants={cardVariants}
                   whileHover={{ y: -10, scale: 1.02 }}
-                  className="card-premium overflow-hidden group bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
+                  className="card-premium overflow-hidden group bg-white dark:bg-gray-800/90 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700"
                 >
-                  <div className={`relative h-64 bg-gradient-to-br ${getTypeColor(rental.vehicleType)} flex items-center justify-center overflow-hidden`}>
-                    <motion.div
-                      className="text-8xl opacity-30"
-                      whileHover={{ scale: 1.2, rotate: -10 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      🚗
-                    </motion.div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                  {/* 🔥 UPDATED IMAGE SECTION - Like Tours Page */}
+                  <div className="relative h-64 overflow-hidden">
+                    {rental.image ? (
+                      <>
+                        <img
+                          src={rental.image}
+                          alt={rental.vehicleName}
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+                      </>
+                    ) : (
+                      <div className={`absolute inset-0 bg-gradient-to-br ${getTypeColor(rental.vehicleType)} flex items-center justify-center`}>
+                        <motion.div
+                          className="text-8xl opacity-30"
+                          whileHover={{ scale: 1.2, rotate: -10 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          🚗
+                        </motion.div>
+                      </div>
+                    )}
+                    
                     <div className="absolute top-6 right-6 flex flex-col gap-2">
                       <span className="bg-white/95 text-blue-700 px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                         {rental.vehicleType}
@@ -230,32 +249,34 @@ const Rentals = () => {
                         </span>
                       )}
                     </div>
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <h3 className="text-2xl font-bold text-white mb-1 drop-shadow-lg">
+                    
+                    <div className="absolute bottom-6 left-6 text-white">
+                      <h3 className="text-2xl font-bold mb-1 drop-shadow-lg">
                         {rental.vehicleName}
                       </h3>
-                      <div className="flex items-center gap-3 text-white/90 text-xs">
+                      <div className="flex items-center gap-3 text-white/90 text-sm">
                         <span>👥 {rental.capacity} Seats</span>
                         {rental.year && <span>📅 {rental.year}</span>}
                         {rental.fuel && <span>⛽ {rental.fuel}</span>}
                       </div>
                     </div>
                   </div>
+
+                  {/* CONTENT SECTION */}
                   <div className="p-6">
-                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                    <p className="text-gray-700 dark:text-gray-300 mb-6 text-sm leading-relaxed">
                       {rental.description}
                     </p>
                     
-                    {rental.features && rental.features.length > 0 && (
-                      <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700/50">
-                        <p className="text-xs font-bold text-gray-800 dark:text-white mb-2 uppercase tracking-wide">
-                          Features
-                        </p>
+                    {/* Features */}
+                    {rental.features?.length > 0 && (
+                      <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
+                        <p className="text-sm font-bold mb-3">Vehicle Features</p>
                         <div className="flex flex-wrap gap-2">
                           {rental.features.map((feature, idx) => (
                             <span
                               key={idx}
-                              className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs"
+                              className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded text-xs"
                             >
                               {feature}
                             </span>
@@ -264,21 +285,35 @@ const Rentals = () => {
                       </div>
                     )}
 
-                    <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700/50">
+                    {/* Info Boxes */}
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p className="text-xs opacity-60">Vehicle Type</p>
+                        <p className="font-semibold">{rental.vehicleType}</p>
+                      </div>
+                      <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p className="text-xs opacity-60">Fuel Type</p>
+                        <p className="font-semibold">{rental.fuel}</p>
+                      </div>
+                    </div>
+
+                    {/* Price + Button */}
+                    <div className="flex justify-between items-center pt-6">
                       <div>
-                        <span className="text-xs text-gray-500 dark:text-gray-400 block">Per Day</span>
+                        <span className="text-sm opacity-70 block">Starting from</span>
                         <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                           LKR {rental.pricePerDay.toLocaleString()}
                         </p>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">+ taxes</span>
+                        <span className="text-xs opacity-70">per day</span>
                       </div>
+
                       <motion.button
                         disabled={!rental.available}
                         whileHover={rental.available ? { scale: 1.05 } : {}}
                         whileTap={rental.available ? { scale: 0.95 } : {}}
                         className={`px-6 py-3 rounded-lg font-semibold shadow-lg transition-all duration-300 ${
                           rental.available
-                            ? `bg-gradient-to-r ${getTypeColor(rental.vehicleType)} text-white hover:shadow-xl`
+                            ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-xl'
                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         }`}
                       >
