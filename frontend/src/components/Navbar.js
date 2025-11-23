@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,8 +35,8 @@ const Navbar = () => {
       transition={{ duration: 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-xl'
-          : 'bg-white/80 backdrop-blur-sm shadow-md'
+          ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-xl dark:shadow-gray-950/50 border-b border-gray-200/50 dark:border-gray-700/50'
+          : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-md dark:shadow-gray-950/30'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,7 +54,7 @@ const Navbar = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center">
             <div className="ml-10 flex items-baseline space-x-2">
               {navLinks.map((link, index) => (
                 <motion.div
@@ -66,15 +67,15 @@ const Navbar = () => {
                     to={link.path}
                     className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                       isActive(link.path)
-                        ? 'text-primary-600'
-                        : 'text-gray-700 hover:text-primary-600'
+                        ? 'text-primary-600 dark:text-primary-400'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'
                     }`}
                   >
                     {link.label}
                     {isActive(link.path) && (
                       <motion.div
                         layoutId="activeTab"
-                        className="absolute inset-0 bg-primary-100 rounded-lg -z-10"
+                        className="absolute inset-0 bg-primary-100 dark:bg-primary-900/50 rounded-lg -z-10"
                         initial={false}
                         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                       />
@@ -83,14 +84,18 @@ const Navbar = () => {
                 </motion.div>
               ))}
             </div>
+            <div className="ml-6">
+              <ThemeToggle />
+            </div>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile menu button and theme toggle */}
+          <div className="md:hidden flex items-center gap-3">
+            <ThemeToggle />
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 hover:text-primary-600 hover:bg-primary-50 focus:outline-none transition-colors"
+              className="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-gray-800 focus:outline-none transition-colors"
             >
               <motion.svg
                 className="h-6 w-6"
@@ -131,7 +136,7 @@ const Navbar = () => {
             transition={{ duration: 0.3 }}
             className="md:hidden overflow-hidden"
           >
-            <div className="px-4 pt-2 pb-4 space-y-2 bg-white border-t border-gray-200">
+            <div className="px-4 pt-2 pb-4 space-y-2 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.path}
@@ -144,8 +149,8 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                     className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 ${
                       isActive(link.path)
-                        ? 'bg-primary-600 text-white shadow-lg'
-                        : 'text-gray-700 hover:bg-primary-50 hover:text-primary-600'
+                        ? 'bg-primary-600 dark:bg-primary-700 text-white shadow-lg'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-gray-800 hover:text-primary-600 dark:hover:text-primary-400'
                     }`}
                   >
                     {link.label}

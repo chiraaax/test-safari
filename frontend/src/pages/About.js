@@ -24,7 +24,7 @@ const About = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Header Section */}
         <section className="relative bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white py-24 overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>
@@ -52,18 +52,18 @@ const About = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
             >
-              <motion.div variants={itemVariants} className="card-premium p-10 mb-8">
-                <h2 className="text-4xl font-bold mb-6 text-gray-800">
+              <motion.div variants={itemVariants} className="card-premium p-10 mb-8 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50">
+                <h2 className="text-4xl font-bold mb-6 text-gray-800 dark:text-white">
                   Our <span className="text-gradient">Story</span>
                 </h2>
-                <p className="text-gray-700 mb-4 leading-relaxed text-lg">
+                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed text-lg">
                   Muthugala Tours is a premier wildlife safari company dedicated to
                   providing exceptional experiences in the heart of Sri Lanka's
                   natural wonders. With years of experience in the tourism industry,
                   we have established ourselves as a trusted name for wildlife
                   enthusiasts and adventure seekers.
                 </p>
-                <p className="text-gray-700 mb-4 leading-relaxed text-lg">
+                <p className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed text-lg">
                   Our passion for wildlife conservation and sustainable tourism
                   drives us to offer authentic safari experiences while respecting
                   and protecting the natural environment. We believe in creating
@@ -72,11 +72,11 @@ const About = () => {
                 </p>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="card-premium p-10 mb-8">
-                <h2 className="text-4xl font-bold mb-6 text-gray-800">
+              <motion.div variants={itemVariants} className="card-premium p-10 mb-8 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50">
+                <h2 className="text-4xl font-bold mb-6 text-gray-800 dark:text-white">
                   Our <span className="text-gradient">Mission</span>
                 </h2>
-                <p className="text-gray-700 leading-relaxed text-lg">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
                   To provide unforgettable wildlife safari experiences that inspire
                   appreciation for nature while promoting sustainable tourism
                   practices. We aim to be the leading safari tour operator in Sri
@@ -85,8 +85,8 @@ const About = () => {
                 </p>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="card-premium p-10 mb-8">
-                <h2 className="text-4xl font-bold mb-8 text-gray-800">
+              <motion.div variants={itemVariants} className="card-premium p-10 mb-8 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50">
+                <h2 className="text-4xl font-bold mb-8 text-gray-800 dark:text-white">
                   Our <span className="text-gradient">Values</span>
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,17 +122,17 @@ const About = () => {
                       className="p-6 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300"
                     >
                       <div className="text-5xl mb-4">{value.icon}</div>
-                      <h3 className="text-xl font-bold mb-2 text-primary-600">
-                        {value.title}
-                      </h3>
-                      <p className="text-gray-600">{value.description}</p>
+                  <h3 className="text-xl font-bold mb-2 text-primary-600 dark:text-primary-400">
+                    {value.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">{value.description}</p>
                     </motion.div>
                   ))}
                 </div>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="card-premium p-10">
-                <h2 className="text-4xl font-bold mb-8 text-gray-800">
+              <motion.div variants={itemVariants} className="card-premium p-10 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50">
+                <h2 className="text-4xl font-bold mb-8 text-gray-800 dark:text-white">
                   Why Choose <span className="text-gradient">Us?</span>
                 </h2>
                 <ul className="space-y-4">
@@ -169,14 +169,14 @@ const About = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-start p-4 rounded-lg hover:bg-primary-50 transition-colors"
+                      className="flex items-start p-4 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors"
                     >
                       <span className="text-primary-600 mr-4 text-2xl">✓</span>
                       <div>
-                        <span className="font-semibold text-gray-800 text-lg">
+                        <span className="font-semibold text-gray-800 dark:text-white text-lg">
                           {item.title}:
                         </span>{' '}
-                        <span className="text-gray-600">{item.description}</span>
+                        <span className="text-gray-600 dark:text-gray-300">{item.description}</span>
                       </div>
                     </motion.li>
                   ))}

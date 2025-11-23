@@ -144,7 +144,7 @@ const Rentals = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Header Section */}
         <section className="relative bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-800 text-white py-28 overflow-hidden">
           <div className="absolute inset-0 bg-black/20"></div>
@@ -161,7 +161,7 @@ const Rentals = () => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
               Premium <span className="text-accent-300">Vehicle Rentals</span>
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-blue-100 dark:text-gray-200 max-w-3xl mx-auto leading-relaxed">
               Reliable, comfortable, and well-maintained vehicles for your safari adventures.
               Choose from our modern fleet of 4WD vehicles, SUVs, and luxury options.
             </p>
@@ -169,7 +169,7 @@ const Rentals = () => {
         </section>
 
         {/* Filter Section */}
-        <section className="py-8 bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
+        <section className="py-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-20 z-40 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap justify-center gap-4">
               {vehicleTypes.map((type) => (
@@ -181,7 +181,7 @@ const Rentals = () => {
                   className={`px-6 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
                     selectedType === type
                       ? 'bg-blue-600 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -205,7 +205,7 @@ const Rentals = () => {
                   key={rental._id}
                   variants={cardVariants}
                   whileHover={{ y: -10, scale: 1.02 }}
-                  className="card-premium overflow-hidden group"
+                  className="card-premium overflow-hidden group bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
                 >
                   <div className={`relative h-64 bg-gradient-to-br ${getTypeColor(rental.vehicleType)} flex items-center justify-center overflow-hidden`}>
                     <motion.div
@@ -247,15 +247,15 @@ const Rentals = () => {
                     </p>
                     
                     {rental.features && rental.features.length > 0 && (
-                      <div className="mb-4 pb-4 border-b border-gray-200">
-                        <p className="text-xs font-bold text-gray-800 mb-2 uppercase tracking-wide">
+                      <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700/50">
+                        <p className="text-xs font-bold text-gray-800 dark:text-white mb-2 uppercase tracking-wide">
                           Features
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {rental.features.map((feature, idx) => (
                             <span
                               key={idx}
-                              className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs"
+                              className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded text-xs"
                             >
                               {feature}
                             </span>
@@ -264,13 +264,13 @@ const Rentals = () => {
                       </div>
                     )}
 
-                    <div className="flex justify-between items-center pt-4">
+                    <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700/50">
                       <div>
-                        <span className="text-xs text-gray-500 block">Per Day</span>
-                        <p className="text-3xl font-bold text-blue-600">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 block">Per Day</span>
+                        <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                           LKR {rental.pricePerDay.toLocaleString()}
                         </p>
-                        <span className="text-xs text-gray-500">+ taxes</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">+ taxes</span>
                       </div>
                       <motion.button
                         disabled={!rental.available}
@@ -292,30 +292,30 @@ const Rentals = () => {
 
             {filteredRentals.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-gray-600 text-lg">No vehicles found for this category.</p>
+                <p className="text-gray-600 dark:text-gray-300 text-lg">No vehicles found for this category.</p>
               </div>
             )}
           </div>
         </section>
 
         {/* Additional Info Section */}
-        <section className="py-16 bg-gradient-to-br from-blue-50 to-white">
+        <section className="py-16 bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div>
                 <div className="text-5xl mb-4">🛡️</div>
-                <h3 className="font-bold text-gray-800 mb-2">Fully Insured</h3>
-                <p className="text-sm text-gray-600">All vehicles are fully insured for your peace of mind</p>
+                <h3 className="font-bold text-gray-800 dark:text-white mb-2">Fully Insured</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">All vehicles are fully insured for your peace of mind</p>
               </div>
               <div>
                 <div className="text-5xl mb-4">🔧</div>
-                <h3 className="font-bold text-gray-800 mb-2">Well Maintained</h3>
-                <p className="text-sm text-gray-600">Regular maintenance ensures reliability and safety</p>
+                <h3 className="font-bold text-gray-800 dark:text-white mb-2">Well Maintained</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Regular maintenance ensures reliability and safety</p>
               </div>
               <div>
                 <div className="text-5xl mb-4">📞</div>
-                <h3 className="font-bold text-gray-800 mb-2">24/7 Support</h3>
-                <p className="text-sm text-gray-600">Round-the-clock assistance during your rental period</p>
+                <h3 className="font-bold text-gray-800 dark:text-white mb-2">24/7 Support</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Round-the-clock assistance during your rental period</p>
               </div>
             </div>
           </div>

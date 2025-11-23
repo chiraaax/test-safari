@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 text-white relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl"></div>
@@ -66,7 +66,7 @@ const Footer = () => {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-gray-400 hover:text-primary-400 transition-colors duration-300 flex items-center group"
+                    className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-300 transition-colors duration-300 flex items-center group"
                   >
                     <span className="mr-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
                     {link.label}
@@ -86,28 +86,28 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4 text-primary-300">
               Our Services
             </h4>
-            <ul className="space-y-3 text-gray-400">
-              <li className="flex items-center">
+            <ul className="space-y-3">
+              <li className="flex items-center text-gray-400 dark:text-gray-500">
                 <span className="mr-2">🦁</span>
                 Wildlife Safari Tours
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center text-gray-400 dark:text-gray-500">
                 <span className="mr-2">🚗</span>
                 Premium Car Rentals
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center text-gray-400 dark:text-gray-500">
                 <span className="mr-2">📦</span>
                 All-Inclusive Packages
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center text-gray-400 dark:text-gray-500">
                 <span className="mr-2">📸</span>
                 Photography Tours
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center text-gray-400 dark:text-gray-500">
                 <span className="mr-2">🏨</span>
                 Luxury Accommodations
               </li>
-              <li className="flex items-center">
+              <li className="flex items-center text-gray-400 dark:text-gray-500">
                 <span className="mr-2">👨‍🏫</span>
                 Expert Guides
               </li>
@@ -124,33 +124,33 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4 text-primary-300">
               Contact Us
             </h4>
-            <ul className="space-y-3 text-gray-400">
+            <ul className="space-y-3">
               <li className="flex items-start">
                 <span className="mr-3 text-primary-400">📧</span>
                 <div>
                   <p className="font-medium text-white">Email</p>
-                  <p>info@muthugalatours.com</p>
+                  <p className="text-gray-400 dark:text-gray-500">info@muthugalatours.com</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <span className="mr-3 text-primary-400">📞</span>
                 <div>
                   <p className="font-medium text-white">Phone</p>
-                  <p>+94 XX XXX XXXX</p>
+                  <p className="text-gray-400 dark:text-gray-500">+94 XX XXX XXXX</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <span className="mr-3 text-primary-400">📍</span>
                 <div>
                   <p className="font-medium text-white">Address</p>
-                  <p>Sri Lanka</p>
+                  <p className="text-gray-400 dark:text-gray-500">Sri Lanka</p>
                 </div>
               </li>
               <li className="flex items-start">
                 <span className="mr-3 text-primary-400">🕒</span>
                 <div>
                   <p className="font-medium text-white">Hours</p>
-                  <p>Mon-Sun: 8AM-8PM</p>
+                  <p className="text-gray-400 dark:text-gray-500">Mon-Sun: 8AM-8PM</p>
                 </div>
               </li>
             </ul>
@@ -161,21 +161,21 @@ const Footer = () => {
         <div className="border-t border-gray-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-gray-400 text-center md:text-left">
+              <p className="text-gray-400 dark:text-gray-500 text-center md:text-left">
                 &copy; {new Date().getFullYear()} Muthugala Tours. All rights reserved.
               </p>
-              <p className="text-gray-500 text-sm mt-2 text-center md:text-left">
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 text-center md:text-left">
                 Licensed Tour Operator | Registered with Sri Lanka Tourism
               </p>
             </div>
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
-              <Link to="/about" className="hover:text-primary-400 transition-colors">
+            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400 dark:text-gray-500">
+              <Link to="/about" className="hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/about" className="hover:text-primary-400 transition-colors">
+              <Link to="/about" className="hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
                 Terms & Conditions
               </Link>
-              <Link to="/contact" className="hover:text-primary-400 transition-colors">
+              <Link to="/contact" className="hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
                 Contact
               </Link>
             </div>

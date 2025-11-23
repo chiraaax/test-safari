@@ -29,7 +29,7 @@ const Contact = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Header Section */}
         <section className="relative bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white py-24 overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>
@@ -42,7 +42,7 @@ const Contact = () => {
             <h1 className="text-5xl md:text-6xl font-bold mb-4">
               Contact <span className="text-accent-300">Us</span>
             </h1>
-            <p className="text-xl md:text-2xl text-primary-100 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-primary-100 dark:text-gray-200 max-w-2xl mx-auto">
               Get in touch with us for bookings and inquiries
             </p>
           </motion.div>
@@ -58,9 +58,9 @@ const Contact = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="card-premium p-8 lg:p-10"
+                className="card-premium p-8 lg:p-10 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
               >
-                <h2 className="text-3xl font-bold mb-6 text-gray-800">
+                <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
                   Send us a <span className="text-gradient">Message</span>
                 </h2>
                 {submitted ? (
@@ -76,10 +76,10 @@ const Contact = () => {
                     >
                       ✓
                     </motion.div>
-                    <p className="text-2xl font-semibold text-primary-600 mb-2">
+                    <p className="text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-2">
                       Thank you!
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-300">
                       We'll get back to you soon.
                     </p>
                   </motion.div>
@@ -88,7 +88,7 @@ const Contact = () => {
                     <div>
                       <label
                         htmlFor="name"
-                        className="block text-sm font-semibold text-gray-700 mb-2"
+                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
                       >
                         Name
                       </label>
@@ -99,7 +99,7 @@ const Contact = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="Your Name"
                       />
                     </div>
@@ -107,7 +107,7 @@ const Contact = () => {
                     <div>
                       <label
                         htmlFor="email"
-                        className="block text-sm font-semibold text-gray-700 mb-2"
+                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
                       >
                         Email
                       </label>
@@ -118,7 +118,7 @@ const Contact = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="your.email@example.com"
                       />
                     </div>
@@ -126,7 +126,7 @@ const Contact = () => {
                     <div>
                       <label
                         htmlFor="phone"
-                        className="block text-sm font-semibold text-gray-700 mb-2"
+                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
                       >
                         Phone
                       </label>
@@ -136,7 +136,7 @@ const Contact = () => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="+94 XX XXX XXXX"
                       />
                     </div>
@@ -144,7 +144,7 @@ const Contact = () => {
                     <div>
                       <label
                         htmlFor="message"
-                        className="block text-sm font-semibold text-gray-700 mb-2"
+                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
                       >
                         Message
                       </label>
@@ -155,7 +155,7 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         rows="5"
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 resize-none"
+                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-300 resize-none placeholder-gray-400 dark:placeholder-gray-500"
                         placeholder="Your message here..."
                       />
                     </div>
@@ -180,8 +180,8 @@ const Contact = () => {
                 transition={{ duration: 0.6 }}
                 className="space-y-6"
               >
-                <div className="card-premium p-8">
-                  <h2 className="text-3xl font-bold mb-8 text-gray-800">
+                <div className="card-premium p-8 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50">
+                  <h2 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">
                     Get in <span className="text-gradient">Touch</span>
                   </h2>
                   <div className="space-y-6">
@@ -214,14 +214,14 @@ const Contact = () => {
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.1 }}
                         whileHover={{ x: 5 }}
-                        className="flex items-start p-4 rounded-lg hover:bg-primary-50 transition-colors"
+                        className="flex items-start p-4 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors"
                       >
                         <div className="text-4xl mr-4">{item.icon}</div>
                         <div>
-                          <h3 className="font-bold text-gray-800 text-lg mb-1">
+                          <h3 className="font-bold text-gray-800 dark:text-white text-lg mb-1">
                             {item.title}
                           </h3>
-                          <p className="text-gray-600 whitespace-pre-line">
+                          <p className="text-gray-600 dark:text-gray-300 whitespace-pre-line">
                             {item.content}
                           </p>
                         </div>
@@ -232,9 +232,9 @@ const Contact = () => {
 
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="card-premium p-8"
+                  className="card-premium p-8 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
                 >
-                  <h2 className="text-2xl font-bold mb-6 text-gray-800">
+                  <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
                     Follow Us
                   </h2>
                   <div className="flex space-x-4">

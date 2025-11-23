@@ -126,7 +126,7 @@ const Tours = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Header Section */}
         <section className="relative bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white py-28 overflow-hidden">
           <div className="absolute inset-0 bg-black/20"></div>
@@ -151,7 +151,7 @@ const Tours = () => {
         </section>
 
         {/* Filter Section */}
-        <section className="py-8 bg-white border-b border-gray-200 sticky top-20 z-40 shadow-sm">
+        <section className="py-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-20 z-40 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap justify-center gap-4">
               {filters.map((filter) => (
@@ -163,7 +163,7 @@ const Tours = () => {
                   className={`px-6 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
                     selectedFilter === filter
                       ? 'bg-primary-600 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {filter.charAt(0).toUpperCase() + filter.slice(1)}
@@ -187,7 +187,7 @@ const Tours = () => {
                   key={tour._id}
                   variants={cardVariants}
                   whileHover={{ y: -10, scale: 1.01 }}
-                  className="card-premium overflow-hidden group"
+                  className="card-premium overflow-hidden group bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
                 >
                   <div className="relative h-80 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700 flex items-center justify-center overflow-hidden">
                     <motion.div
@@ -204,9 +204,9 @@ const Tours = () => {
                       </span>
                     </div>
                     <div className="absolute bottom-6 left-6 right-6">
-                      <h3 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">
-                        {tour.title}
-                      </h3>
+                    <h3 className="text-3xl font-bold text-white dark:text-gray-100 mb-2 drop-shadow-lg">
+                      {tour.title}
+                    </h3>
                       <div className="flex items-center gap-4 text-white/90 text-sm">
                         <span className="flex items-center gap-1">
                           📍 {tour.location}
@@ -218,19 +218,19 @@ const Tours = () => {
                     </div>
                   </div>
                   <div className="p-8">
-                    <p className="text-gray-700 mb-6 leading-relaxed text-base">
+                    <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed text-base">
                       {tour.description}
                     </p>
                     
                     {tour.highlights && tour.highlights.length > 0 && (
-                      <div className="mb-6 pb-6 border-b border-gray-200">
-                        <p className="text-sm font-bold text-gray-800 mb-3 uppercase tracking-wide">
+                      <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700/50">
+                        <p className="text-sm font-bold text-gray-800 dark:text-white mb-3 uppercase tracking-wide">
                           Tour Highlights
                         </p>
                         <div className="grid grid-cols-2 gap-2">
                           {tour.highlights.map((highlight, idx) => (
-                            <div key={idx} className="flex items-center text-sm text-gray-600">
-                              <span className="text-primary-600 mr-2">✓</span>
+                            <div key={idx} className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                              <span className="text-primary-600 dark:text-primary-400 mr-2">✓</span>
                               {highlight}
                             </div>
                           ))}
@@ -239,26 +239,26 @@ const Tours = () => {
                     )}
 
                     <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <p className="text-xs text-gray-500 mb-1">Best Time</p>
-                        <p className="font-semibold text-gray-800">{tour.bestTime || 'All Day'}</p>
+                      <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Best Time</p>
+                        <p className="font-semibold text-gray-800 dark:text-white">{tour.bestTime || 'All Day'}</p>
                       </div>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <p className="text-xs text-gray-500 mb-1">Max Group Size</p>
-                        <p className="font-semibold text-gray-800">{tour.maxParticipants} People</p>
+                      <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Max Group Size</p>
+                        <p className="font-semibold text-gray-800 dark:text-white">{tour.maxParticipants} People</p>
                       </div>
                     </div>
 
                     {tour.includes && tour.includes.length > 0 && (
-                      <div className="mb-6 pb-6 border-b border-gray-200">
-                        <p className="text-sm font-bold text-gray-800 mb-3 uppercase tracking-wide">
+                      <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700/50">
+                        <p className="text-sm font-bold text-gray-800 dark:text-white mb-3 uppercase tracking-wide">
                           What's Included
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {tour.includes.map((item, idx) => (
                             <span
                               key={idx}
-                              className="bg-primary-50 text-primary-700 px-3 py-1.5 rounded-lg text-xs font-medium"
+                              className="bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1.5 rounded-lg text-xs font-medium"
                             >
                               {item}
                             </span>
@@ -267,13 +267,13 @@ const Tours = () => {
                       </div>
                     )}
 
-                    <div className="flex justify-between items-center pt-6">
+                    <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700/50">
                       <div>
-                        <span className="text-sm text-gray-500 block">Starting from</span>
-                        <p className="text-4xl font-bold text-primary-600">
+                        <span className="text-sm text-gray-500 dark:text-gray-400 block">Starting from</span>
+                        <p className="text-4xl font-bold text-primary-600 dark:text-primary-400">
                           LKR {tour.price.toLocaleString()}
                         </p>
-                        <span className="text-xs text-gray-500">per person</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">per person</span>
                       </div>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -290,7 +290,7 @@ const Tours = () => {
 
             {filteredTours.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-gray-600 text-lg">No tours found for this filter.</p>
+                <p className="text-gray-600 dark:text-gray-300 text-lg">No tours found for this filter.</p>
               </div>
             )}
           </div>
@@ -308,7 +308,7 @@ const Tours = () => {
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 Need a Custom Tour?
               </h2>
-              <p className="text-xl text-primary-100 mb-8">
+              <p className="text-xl text-primary-100 dark:text-gray-300 mb-8">
                 Contact us to create a personalized safari experience tailored to your preferences
               </p>
               <motion.a

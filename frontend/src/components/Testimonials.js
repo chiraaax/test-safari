@@ -57,7 +57,7 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -66,10 +66,10 @@ const Testimonials = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800 dark:text-white">
             What Our <span className="text-gradient">Guests Say</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Don't just take our word for it - hear from our satisfied customers
           </p>
         </motion.div>
@@ -86,13 +86,13 @@ const Testimonials = () => {
               key={testimonial.id}
               variants={itemVariants}
               whileHover={{ y: -10, scale: 1.02 }}
-              className="card-premium p-6 h-full flex flex-col"
+                  className="card-premium p-6 h-full flex flex-col bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
             >
               <div className="flex items-center mb-4">
                 <div className="text-5xl mr-4">{testimonial.image}</div>
                 <div>
-                  <h4 className="font-bold text-gray-800">{testimonial.name}</h4>
-                  <p className="text-sm text-gray-500">{testimonial.location}</p>
+                  <h4 className="font-bold text-gray-800 dark:text-white">{testimonial.name}</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{testimonial.location}</p>
                 </div>
               </div>
               <div className="flex mb-3">
@@ -100,7 +100,7 @@ const Testimonials = () => {
                   <span key={i} className="text-yellow-400 text-lg">⭐</span>
                 ))}
               </div>
-              <p className="text-gray-600 text-sm leading-relaxed flex-grow">
+              <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed flex-grow">
                 "{testimonial.text}"
               </p>
             </motion.div>

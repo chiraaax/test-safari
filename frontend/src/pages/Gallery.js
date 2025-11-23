@@ -75,7 +75,7 @@ const Gallery = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Header Section */}
         <section className="relative bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white py-24 overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>
@@ -109,7 +109,7 @@ const Gallery = () => {
                   key={image.id}
                   variants={itemVariants}
                   whileHover={{ scale: 1.05, y: -10 }}
-                  className="card-premium overflow-hidden group cursor-pointer relative"
+                  className="card-premium overflow-hidden group cursor-pointer relative bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
                 >
                   <div
                     className={`h-64 bg-gradient-to-br ${image.gradient} flex items-center justify-center relative overflow-hidden`}
@@ -146,7 +146,7 @@ const Gallery = () => {
               transition={{ duration: 0.6 }}
               className="mt-16 text-center"
             >
-              <p className="text-gray-600 mb-6 text-lg">
+              <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">
                 Want to see more? Join us on one of our tours!
               </p>
               <motion.a

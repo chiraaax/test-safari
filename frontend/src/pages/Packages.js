@@ -123,7 +123,7 @@ const Packages = () => {
             >
               📦
             </motion.div>
-            <p className="text-gray-600 text-lg">Loading packages...</p>
+            <p className="text-gray-600 dark:text-gray-300 text-lg">Loading packages...</p>
           </motion.div>
         </div>
       </PageTransition>
@@ -162,18 +162,18 @@ const Packages = () => {
 
   const getCategoryBadgeColor = (category) => {
     const colors = {
-      Luxury: 'bg-purple-100 text-purple-700',
-      Family: 'bg-blue-100 text-blue-700',
-      Budget: 'bg-green-100 text-green-700',
-      Adventure: 'bg-orange-100 text-orange-700',
-      Photography: 'bg-indigo-100 text-indigo-700',
+      Luxury: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300',
+      Family: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+      Budget: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+      Adventure: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300',
+      Photography: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300',
     };
-    return colors[category] || 'bg-gray-100 text-gray-700';
+    return colors[category] || 'bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300';
   };
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Header Section */}
         <section className="relative bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-800 text-white py-24 overflow-hidden">
           <div className="absolute inset-0 bg-black/10"></div>
@@ -206,7 +206,7 @@ const Packages = () => {
                   key={pkg._id}
                   variants={cardVariants}
                   whileHover={{ y: -10, scale: 1.02 }}
-                  className="card-premium overflow-hidden group relative"
+                  className="card-premium overflow-hidden group relative bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
                 >
                   <div
                     className={`relative h-64 bg-gradient-to-br ${getCategoryColor(
@@ -230,29 +230,29 @@ const Packages = () => {
                     </span>
                   </div>
                   <div className="p-8">
-                    <h3 className="text-3xl font-bold mb-3 text-gray-800 group-hover:text-purple-600 transition-colors">
+                    <h3 className="text-3xl font-bold mb-3 text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                       {pkg.name}
                     </h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">
+                    <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                       {pkg.description}
                     </p>
                     <div className="space-y-3 mb-6">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-500">Duration:</span>
-                        <span className="font-semibold text-gray-800">
+                        <span className="text-gray-500 dark:text-gray-400">Duration:</span>
+                        <span className="font-semibold text-gray-800 dark:text-white">
                           {pkg.duration}
                         </span>
                       </div>
                       {pkg.destinations && pkg.destinations.length > 0 && (
                         <div>
-                          <span className="text-gray-500 block mb-2">
+                          <span className="text-gray-500 dark:text-gray-400 block mb-2">
                             Destinations:
                           </span>
                           <div className="flex flex-wrap gap-2">
                             {pkg.destinations.map((dest, index) => (
                               <span
                                 key={index}
-                                className="bg-purple-50 text-purple-700 px-3 py-1 rounded-lg text-sm font-medium"
+                                className="bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-lg text-sm font-medium"
                               >
                                 {dest}
                               </span>
@@ -262,17 +262,17 @@ const Packages = () => {
                       )}
                     </div>
                     {pkg.highlights && pkg.highlights.length > 0 && (
-                      <div className="mb-6 pb-6 border-b border-gray-200">
-                        <p className="text-sm font-semibold text-gray-700 mb-3">
+                      <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700/50">
+                        <p className="text-sm font-semibold text-gray-700 dark:text-white mb-3">
                           Highlights:
                         </p>
                         <ul className="space-y-2">
                           {pkg.highlights.map((highlight, index) => (
                             <li
                               key={index}
-                              className="flex items-center text-sm text-gray-600"
+                              className="flex items-center text-sm text-gray-600 dark:text-gray-300"
                             >
-                              <span className="text-green-500 mr-2">✓</span>
+                              <span className="text-green-500 dark:text-green-400 mr-2">✓</span>
                               {highlight}
                             </li>
                           ))}
@@ -281,14 +281,14 @@ const Packages = () => {
                     )}
                     {pkg.includes && pkg.includes.length > 0 && (
                       <div className="mb-6">
-                        <p className="text-sm font-semibold text-gray-700 mb-3">
+                        <p className="text-sm font-semibold text-gray-700 dark:text-white mb-3">
                           Includes:
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {pkg.includes.map((item, index) => (
                             <span
                               key={index}
-                              className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs"
+                              className="bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 px-3 py-1 rounded text-xs"
                             >
                               {item}
                             </span>
@@ -296,10 +296,10 @@ const Packages = () => {
                         </div>
                       </div>
                     )}
-                    <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+                    <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700/50">
                       <div>
-                        <span className="text-sm text-gray-500">Starting from</span>
-                        <p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                        <span className="text-sm text-gray-500 dark:text-gray-400">Starting from</span>
+                        <p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
                           LKR {pkg.price.toLocaleString()}
                         </p>
                       </div>

@@ -95,7 +95,7 @@ const Home = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-primary-200 text-lg md:text-xl font-semibold mb-4 tracking-wider uppercase"
+                  className="text-primary-200 dark:text-gray-300 text-lg md:text-xl font-semibold mb-4 tracking-wider uppercase"
                 >
                   Premium Wildlife Safari Experiences
                 </motion.p>
@@ -149,7 +149,7 @@ const Home = () => {
               {/* Trust Indicators */}
               <motion.div
                 variants={itemVariants}
-                className="flex flex-wrap justify-center items-center gap-8 text-primary-200 text-sm"
+                  className="flex flex-wrap justify-center items-center gap-8 text-primary-200 dark:text-gray-300 text-sm"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">✓</span>
@@ -188,7 +188,7 @@ const Home = () => {
       <Stats />
 
       {/* Features Section */}
-      <section ref={servicesRef} className="section-padding bg-gradient-to-b from-white to-gray-50">
+      <section ref={servicesRef} className="section-padding bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -197,10 +197,10 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800 dark:text-white">
               Our <span className="text-gradient">Premium Services</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Experience the best of Sri Lankan wildlife with our expertly curated services
             </p>
           </motion.div>
@@ -245,7 +245,7 @@ const Home = () => {
                   key={index}
                   variants={itemVariants}
                   whileHover={{ y: -15, scale: 1.02 }}
-                  className="card-premium p-8 text-center group cursor-pointer h-full flex flex-col"
+                  className="card-premium p-8 text-center group cursor-pointer h-full flex flex-col bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
                 >
                   <motion.div
                     className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center text-5xl shadow-lg transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}
@@ -254,19 +254,19 @@ const Home = () => {
                   >
                     {service.icon}
                   </motion.div>
-                  <h3 className="text-2xl font-bold mb-4 text-gray-800 group-hover:text-primary-600 transition-colors">
+                  <h3 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed flex-grow">
+                  <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed flex-grow">
                     {service.description}
                   </p>
                   <div className="mb-6">
-                    <p className="text-sm font-semibold text-gray-700 mb-3">Includes:</p>
+                    <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Includes:</p>
                     <div className="flex flex-wrap justify-center gap-2">
                       {service.features.map((feature, idx) => (
                         <span
                           key={idx}
-                          className="bg-primary-50 text-primary-700 px-3 py-1 rounded-full text-xs font-medium"
+                          className="bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-medium"
                         >
                           {feature}
                         </span>
@@ -275,7 +275,7 @@ const Home = () => {
                   </div>
                   <Link
                     to={service.link}
-                    className="inline-flex items-center justify-center text-primary-600 font-semibold group-hover:text-primary-700 transition-colors"
+                    className="inline-flex items-center justify-center text-primary-600 dark:text-primary-400 font-semibold group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors"
                   >
                     Learn More
                     <motion.span
@@ -294,7 +294,7 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section ref={featuresRef} className="section-padding bg-white">
+      <section ref={featuresRef} className="section-padding bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -303,10 +303,10 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800 dark:text-white">
               Why Choose <span className="text-gradient">Muthugala Tours?</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               We provide exceptional experiences that create lasting memories
             </p>
           </motion.div>
@@ -352,7 +352,7 @@ const Home = () => {
                   key={index}
                   variants={itemVariants}
                   whileHover={{ scale: 1.05, y: -5 }}
-                  className={`text-center p-8 rounded-2xl ${feature.bg} border-2 border-transparent hover:border-primary-200 hover:shadow-xl transition-all duration-300`}
+                  className={`text-center p-8 rounded-2xl ${feature.bg} dark:bg-gray-800/70 border-2 border-transparent hover:border-primary-200 dark:hover:border-primary-600/50 hover:shadow-xl dark:hover:shadow-primary-900/20 transition-all duration-300`}
                 >
                   <motion.div
                     className={`text-6xl mb-4 ${feature.color}`}
@@ -361,10 +361,10 @@ const Home = () => {
                   >
                     {feature.icon}
                   </motion.div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-800">
+                  <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -394,7 +394,7 @@ const Home = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Ready for Your Adventure?
             </h2>
-            <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-primary-100 dark:text-gray-200 mb-8 max-w-2xl mx-auto">
               Book your safari experience today and create memories that last a lifetime.
               Our expert team is ready to make your wildlife dreams come true.
             </p>
