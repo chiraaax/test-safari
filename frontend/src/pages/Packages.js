@@ -17,10 +17,12 @@ const Packages = () => {
       setPackages(response.data);
     } catch (error) {
       console.error('Error fetching packages:', error);
+      // 🔥 FALLBACK DATA (now includes images)
       setPackages([
         {
           _id: '1',
           name: 'Ultimate Wildlife Experience',
+          image: '/images/ultimate-wildlife.jpg',
           description: 'A comprehensive 3-day package covering multiple national parks with luxury accommodation.',
           duration: '3 Days / 2 Nights',
           price: 45000,
@@ -43,6 +45,7 @@ const Packages = () => {
         {
           _id: '2',
           name: 'Family Safari Adventure',
+          image: '/images/family-safari.webp',
           description: 'Perfect family-friendly package with comfortable accommodations and kid-friendly activities.',
           duration: '2 Days / 1 Night',
           price: 30000,
@@ -65,6 +68,7 @@ const Packages = () => {
         {
           _id: '3',
           name: 'Budget Safari Explorer',
+          image: '/images/budget-safari.jpg',
           description: 'Affordable package for budget-conscious travelers without compromising on the experience.',
           duration: '1 Day',
           price: 12000,
@@ -81,6 +85,7 @@ const Packages = () => {
         {
           _id: '4',
           name: 'Photography Safari Package',
+          image: '/images/photography-safari.jpg',
           description: 'Designed for photography enthusiasts with special access and timing for best shots.',
           duration: '2 Days / 1 Night',
           price: 35000,
@@ -206,79 +211,81 @@ const Packages = () => {
                   key={pkg._id}
                   variants={cardVariants}
                   whileHover={{ y: -10, scale: 1.02 }}
-                  className="card-premium overflow-hidden group relative bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
+                  className="card-premium overflow-hidden group relative bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50 rounded-xl shadow-xl border"
                 >
-                  <div
-                    className={`relative h-64 bg-gradient-to-br ${getCategoryColor(
-                      pkg.category
-                    )} flex items-center justify-center overflow-hidden`}
-                  >
-                    <motion.div
-                      className="text-8xl"
-                      whileHover={{ scale: 1.2, rotate: 10 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      📦
-                    </motion.div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  {/* 🔥 IMAGE SECTION - Updated with real images */}
+                  <div className="relative h-80 overflow-hidden">
+                    <img
+                      src={pkg.image}
+                      alt={pkg.name}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+                    
+                    {/* Category Badge */}
                     <span
-                      className={`absolute top-4 right-4 px-4 py-2 rounded-full text-sm font-semibold ${getCategoryBadgeColor(
+                      className={`absolute top-6 right-6 px-4 py-2 rounded-full text-sm font-semibold ${getCategoryBadgeColor(
                         pkg.category
                       )}`}
                     >
                       {pkg.category}
                     </span>
+
+                    {/* Package Info Overlay */}
+                    <div className="absolute bottom-6 left-6 text-white">
+                      <h3 className="text-3xl font-bold mb-1">{pkg.name}</h3>
+                      <div className="flex gap-4 text-sm opacity-90">
+                        <span>⏱️ {pkg.duration}</span>
+                        {pkg.destinations && pkg.destinations.length > 0 && (
+                          <span>📍 {pkg.destinations[0]}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
+
+                  {/* CONTENT */}
                   <div className="p-8">
-                    <h3 className="text-3xl font-bold mb-3 text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                      {pkg.name}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                    <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
                       {pkg.description}
                     </p>
-                    <div className="space-y-3 mb-6">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-500 dark:text-gray-400">Duration:</span>
-                        <span className="font-semibold text-gray-800 dark:text-white">
-                          {pkg.duration}
-                        </span>
-                      </div>
-                      {pkg.destinations && pkg.destinations.length > 0 && (
-                        <div>
-                          <span className="text-gray-500 dark:text-gray-400 block mb-2">
-                            Destinations:
-                          </span>
-                          <div className="flex flex-wrap gap-2">
-                            {pkg.destinations.map((dest, index) => (
-                              <span
-                                key={index}
-                                className="bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-lg text-sm font-medium"
-                              >
-                                {dest}
-                              </span>
-                            ))}
-                          </div>
+
+                    {/* Destinations */}
+                    {pkg.destinations && pkg.destinations.length > 0 && (
+                      <div className="mb-6">
+                        <p className="text-sm font-semibold text-gray-700 dark:text-white mb-3">
+                          Destinations:
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {pkg.destinations.map((dest, index) => (
+                            <span
+                              key={index}
+                              className="bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-lg text-sm font-medium"
+                            >
+                              {dest}
+                            </span>
+                          ))}
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
+
+                    {/* Highlights */}
                     {pkg.highlights && pkg.highlights.length > 0 && (
                       <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700/50">
                         <p className="text-sm font-semibold text-gray-700 dark:text-white mb-3">
                           Highlights:
                         </p>
-                        <ul className="space-y-2">
+                        <div className="grid grid-cols-2 gap-2">
                           {pkg.highlights.map((highlight, index) => (
-                            <li
-                              key={index}
-                              className="flex items-center text-sm text-gray-600 dark:text-gray-300"
-                            >
-                              <span className="text-green-500 dark:text-green-400 mr-2">✓</span>
+                            <div key={index} className="flex items-center text-sm">
+                              <span className="text-primary-600 mr-2">✓</span>
                               {highlight}
-                            </li>
+                            </div>
                           ))}
-                        </ul>
+                        </div>
                       </div>
                     )}
+
+                    {/* Includes */}
                     {pkg.includes && pkg.includes.length > 0 && (
                       <div className="mb-6">
                         <p className="text-sm font-semibold text-gray-700 dark:text-white mb-3">
@@ -296,12 +303,15 @@ const Packages = () => {
                         </div>
                       </div>
                     )}
+
+                    {/* Price + Button */}
                     <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700/50">
                       <div>
                         <span className="text-sm text-gray-500 dark:text-gray-400">Starting from</span>
-                        <p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                        <p className="text-4xl font-bold text-primary-600">
                           LKR {pkg.price.toLocaleString()}
                         </p>
+                        <span className="text-xs opacity-70">per person</span>
                       </div>
                       <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -316,6 +326,24 @@ const Packages = () => {
                   </div>
                 </motion.div>
               ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-gradient-to-r from-purple-600 to-indigo-800 text-white">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
+              <h2 className="text-5xl font-bold mb-6">Custom Package Needed?</h2>
+              <p className="text-xl opacity-90 mb-10">
+                Let us create a personalized safari package just for you.
+              </p>
+              <a
+                href="/contact"
+                className="bg-white text-purple-600 px-10 py-4 rounded-lg font-semibold inline-block shadow-xl hover:shadow-2xl transition-all duration-300"
+              >
+                Get Custom Quote
+              </a>
             </motion.div>
           </div>
         </section>
