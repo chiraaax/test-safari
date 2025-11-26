@@ -397,5 +397,4 @@ Just open these URLs:
 - Frontend will automatically reload when you make changes
 - Use `Ctrl+C` to stop servers
 
-Enjoy testing your Muthugala Tours application! 🦁🚗📦
 
