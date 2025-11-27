@@ -12,7 +12,7 @@ import Gallery from './pages/Gallery';
 import Tours from './pages/Tours';
 import Rentals from './pages/Rentals';
 import Packages from './pages/Packages';
-
+import WhatsAppButton from './components/WhatsAppButton';
 
 // ✅ FIX 1: Wrap route transitions inside a separate component
 // This prevents re-mount issues & scroll-lag caused by double-render.
@@ -29,7 +29,9 @@ function AnimatedRoutes() {
         <Route path="/tours" element={<Tours />} />
         <Route path="/rentals" element={<Rentals />} />
         <Route path="/packages" element={<Packages />} />
+        
       </Routes>
+      <WhatsAppButton />
     </AnimatePresence>
   );
 }
