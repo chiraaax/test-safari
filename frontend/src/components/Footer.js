@@ -1,42 +1,44 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 text-white relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent-500 rounded-full blur-3xl"></div>
+    <footer className="bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-300 relative overflow-hidden">
+
+      {/* Beautiful green glowing background */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-0 left-0 w-72 h-72 bg-green-500 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-72 h-72 bg-green-400 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
-          {/* Company Info */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-16">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+          {/* Brand */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="lg:col-span-2"
+            transition={{ duration: 0.4 }}
           >
-            <h3 className="text-3xl font-bold text-primary-400 mb-4">
-              Muthugala Tours
+            <h3 className="text-3xl font-bold text-green-500 mb-4">
+              Priyankara Tours & Transport
             </h3>
-            <p className="text-gray-400 leading-relaxed mb-6">
-              Your trusted partner for unforgettable wildlife safari experiences
-              in Sri Lanka. With over 15 years of experience, we provide premium
-              safari tours, luxury accommodations, and expert guidance.
+            <p className="text-gray-600 dark:text-gray-400">
+              Trusted tour and transport partner in Sri Lanka. 
+              We provide safari rides, airport drops, taxi service 
+              and customized tours.
             </p>
-            <div className="flex space-x-4">
-              {['📘', '📷', '🐦', '📧'].map((icon, index) => (
+
+            {/* Social icons */}
+            <div className="flex space-x-4 mt-6">
+              {["📘", "📷", "🐦", "📧"].map((icon, i) => (
                 <motion.a
-                  key={index}
+                  key={i}
                   href="#"
-                  whileHover={{ scale: 1.2, rotate: 5, y: -5 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center text-2xl hover:bg-primary-600 transition-colors duration-300"
+                  whileHover={{ scale: 1.2 }}
+                  className="w-10 h-10 bg-gray-200 dark:bg-gray-800 rounded-lg flex items-center justify-center text-xl hover:bg-green-500 hover:text-white transition"
                 >
                   {icon}
                 </motion.a>
@@ -48,28 +50,22 @@ const Footer = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.5 }}
           >
-            <h4 className="text-lg font-semibold mb-4 text-primary-300">
+            <h4 className="text-lg font-semibold text-green-500 mb-4">
               Quick Links
             </h4>
             <ul className="space-y-3">
               {[
-                { path: '/', label: 'Home' },
-                { path: '/about', label: 'About Us' },
-                { path: '/tours', label: 'Wildlife Tours' },
-                { path: '/rentals', label: 'Car Rentals' },
-                { path: '/packages', label: 'Safari Packages' },
-                { path: '/gallery', label: 'Gallery' },
+                { path: "/", label: "Home" },
+                { path: "/about", label: "About Us" },
+                { path: "/tours", label: "Tour Packages" },
+                { path: "/vehicles", label: "Vehicles" },
+                { path: "/gallery", label: "Gallery" },
               ].map((link) => (
                 <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-gray-400 dark:text-gray-500 hover:text-primary-400 dark:hover:text-primary-300 transition-colors duration-300 flex items-center group"
-                  >
-                    <span className="mr-2 group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    {link.label}
+                  <Link className="hover:text-green-500 transition" to={link.path}>
+                    → {link.label}
                   </Link>
                 </li>
               ))}
@@ -80,37 +76,18 @@ const Footer = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.6 }}
           >
-            <h4 className="text-lg font-semibold mb-4 text-primary-300">
+            <h4 className="text-lg font-semibold text-green-500 mb-4">
               Our Services
             </h4>
-            <ul className="space-y-3">
-              <li className="flex items-center text-gray-400 dark:text-gray-500">
-                <span className="mr-2">🦁</span>
-                Wildlife Safari Tours
-              </li>
-              <li className="flex items-center text-gray-400 dark:text-gray-500">
-                <span className="mr-2">🚗</span>
-                Premium Car Rentals
-              </li>
-              <li className="flex items-center text-gray-400 dark:text-gray-500">
-                <span className="mr-2">📦</span>
-                All-Inclusive Packages
-              </li>
-              <li className="flex items-center text-gray-400 dark:text-gray-500">
-                <span className="mr-2">📸</span>
-                Photography Tours
-              </li>
-              <li className="flex items-center text-gray-400 dark:text-gray-500">
-                <span className="mr-2">🏨</span>
-                Luxury Accommodations
-              </li>
-              <li className="flex items-center text-gray-400 dark:text-gray-500">
-                <span className="mr-2">👨‍🏫</span>
-                Expert Guides
-              </li>
+            <ul className="space-y-3 text-gray-600 dark:text-gray-400">
+              <li>🦁 Yala Safari Tours</li>
+              <li>🚗 Airport Pickup / Drop</li>
+              <li>🛻 Taxi & Transport Service</li>
+              <li>📸 Photography Tours</li>
+              <li>🏨 Hotel Arrangements</li>
+              <li>🌍 Customized Travel Plans</li>
             </ul>
           </motion.div>
 
@@ -118,67 +95,50 @@ const Footer = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.7 }}
           >
-            <h4 className="text-lg font-semibold mb-4 text-primary-300">
+            <h4 className="text-lg font-semibold text-green-500 mb-4">
               Contact Us
             </h4>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <span className="mr-3 text-primary-400">📧</span>
-                <div>
-                  <p className="font-medium text-white">Email</p>
-                  <p className="text-gray-400 dark:text-gray-500">info@muthugalatours.com</p>
-                </div>
+            <ul className="space-y-4">
+              <li>
+                <p className="font-medium">📧 Email</p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  priyankaratours@gmail.com
+                </p>
               </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-primary-400">📞</span>
-                <div>
-                  <p className="font-medium text-white">Phone</p>
-                  <p className="text-gray-400 dark:text-gray-500">+94 XX XXX XXXX</p>
-                </div>
+
+              <li>
+                <p className="font-medium">📞 Phone</p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  +94 71 707 7970
+                </p>
               </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-primary-400">📍</span>
-                <div>
-                  <p className="font-medium text-white">Address</p>
-                  <p className="text-gray-400 dark:text-gray-500">Sri Lanka</p>
-                </div>
-              </li>
-              <li className="flex items-start">
-                <span className="mr-3 text-primary-400">🕒</span>
-                <div>
-                  <p className="font-medium text-white">Hours</p>
-                  <p className="text-gray-400 dark:text-gray-500">Mon-Sun: 8AM-8PM</p>
-                </div>
+
+              <li>
+                <p className="font-medium">📍 Location</p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Tissamaharama, Sri Lanka
+                </p>
               </li>
             </ul>
           </motion.div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-700 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <p className="text-gray-400 dark:text-gray-500 text-center md:text-left">
-                &copy; {new Date().getFullYear()} Muthugala Tours. All rights reserved.
-              </p>
-              <p className="text-gray-500 dark:text-gray-400 text-sm mt-2 text-center md:text-left">
-                Licensed Tour Operator | Registered with Sri Lanka Tourism
-              </p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400 dark:text-gray-500">
-              <Link to="/about" className="hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="/about" className="hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
-                Terms & Conditions
-              </Link>
-              <Link to="/contact" className="hover:text-primary-400 dark:hover:text-primary-300 transition-colors">
-                Contact
-              </Link>
-            </div>
+        <div className="border-t border-gray-300 dark:border-gray-700 mt-10 pt-6 flex flex-col md:flex-row justify-between text-sm text-gray-500 dark:text-gray-400">
+          <p>© {new Date().getFullYear()} Priyankara Tours & Transport. All Rights Reserved.</p>
+
+          <div className="flex space-x-6 mt-2 md:mt-0">
+            <Link className="hover:text-green-500 transition" to="/privacy">
+              Privacy Policy
+            </Link>
+            <Link className="hover:text-green-500 transition" to="/terms">
+              Terms
+            </Link>
+            <Link className="hover:text-green-500 transition" to="/contact">
+              Contact
+            </Link>
           </div>
         </div>
       </div>
