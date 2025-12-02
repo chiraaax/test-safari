@@ -6,10 +6,12 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     message: '',
   });
-  const [submitted, setSubmitted] = useState(false);
+
+  // WhatsApp Config
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94772217970";
+  const formattedNumber = whatsappNumber.replace(/[^0-9]/g, '');
 
   const handleChange = (e) => {
     setFormData({
@@ -20,241 +22,196 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    }, 3000);
+    
+    // Construct WhatsApp Message
+    const text = `*New Inquiry from Website*%0A%0A*Name:* ${formData.name}%0A*Email:* ${formData.email}%0A*Message:* ${formData.message}`;
+    
+    // Open WhatsApp
+    window.open(`https://wa.me/${formattedNumber}?text=${text}`, '_blank');
+    
+    // Reset Form
+    setFormData({ name: '', email: '', message: '' });
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        {/* Header Section */}
-        <section className="relative bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white py-24 overflow-hidden">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <motion.div
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        
+        {/* ================= HERO SECTION ================= */}
+        <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+              alt="Contact Hero" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30" />
+          </div>
+
+          <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+            className="relative z-10 text-center px-4"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
-              Contact <span className="text-accent-300">Us</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-primary-100 dark:text-gray-200 max-w-2xl mx-auto">
-              Get in touch with us for bookings and inquiries
-            </p>
+            <div className="backdrop-blur-md bg-white/10 dark:bg-black/40 border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl inline-block">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
+                Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">Touch</span>
+              </h1>
+              <p className="text-lg text-gray-200">
+                We'd love to hear from you. Start your journey today.
+              </p>
+            </div>
           </motion.div>
         </section>
 
-        {/* Contact Section */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Contact Form */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="card-premium p-8 lg:p-10 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
-              >
-                <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
-                  Send us a <span className="text-gradient">Message</span>
-                </h2>
-                {submitted ? (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="text-center py-12"
-                  >
-                    <motion.div
-                      className="text-6xl mb-4"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      ✓
-                    </motion.div>
-                    <p className="text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-2">
-                      Thank you!
-                    </p>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      We'll get back to you soon.
-                    </p>
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label
-                        htmlFor="name"
-                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-                      >
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500"
-                        placeholder="Your Name"
-                      />
-                    </div>
+        {/* ================= CONTENT SECTION ================= */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12"
+          >
+            
+            {/* LEFT: Contact Form */}
+            <motion.div variants={itemVariants}>
+              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 relative overflow-hidden group">
+                {/* Decorative Blur */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/10 rounded-full blur-3xl -mr-32 -mt-32 group-hover:bg-green-500/20 transition-colors duration-500"></div>
 
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500"
-                        placeholder="your.email@example.com"
-                      />
-                    </div>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 relative z-10">Send a Message</h2>
+                <p className="text-gray-500 dark:text-gray-400 mb-8 relative z-10">Directly via WhatsApp</p>
 
-                    <div>
-                      <label
-                        htmlFor="phone"
-                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-                      >
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-500"
-                        placeholder="+94 XX XXX XXXX"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="message"
-                        className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-                      >
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                        rows="5"
-                        className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-300 resize-none placeholder-gray-400 dark:placeholder-gray-500"
-                        placeholder="Your message here..."
-                      />
-                    </div>
-
-                    <motion.button
-                      type="submit"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                      Send Message
-                    </motion.button>
-                  </form>
-                )}
-              </motion.div>
-
-              {/* Contact Information */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="space-y-6"
-              >
-                <div className="card-premium p-8 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50">
-                  <h2 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">
-                    Get in <span className="text-gradient">Touch</span>
-                  </h2>
-                  <div className="space-y-6">
-                    {[
-                      {
-                        icon: '📍',
-                        title: 'Address',
-                        content: 'Muthugala Tours\nSri Lanka',
-                      },
-                      {
-                        icon: '📧',
-                        title: 'Email',
-                        content: 'info@muthugalatours.com',
-                      },
-                      {
-                        icon: '📞',
-                        title: 'Phone',
-                        content: '+94 XX XXX XXXX',
-                      },
-                      {
-                        icon: '🕒',
-                        title: 'Business Hours',
-                        content: 'Monday - Sunday: 8:00 AM - 8:00 PM',
-                      },
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 }}
-                        whileHover={{ x: 5 }}
-                        className="flex items-start p-4 rounded-lg hover:bg-primary-50 dark:hover:bg-gray-800 transition-colors"
-                      >
-                        <div className="text-4xl mr-4">{item.icon}</div>
-                        <div>
-                          <h3 className="font-bold text-gray-800 dark:text-white text-lg mb-1">
-                            {item.title}
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-300 whitespace-pre-line">
-                            {item.content}
-                          </p>
-                        </div>
-                      </motion.div>
-                    ))}
+                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Your Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 border-2 border-transparent focus:border-green-500 focus:bg-white dark:focus:bg-gray-600 transition-all outline-none text-gray-900 dark:text-white"
+                      placeholder="John Doe"
+                    />
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 border-2 border-transparent focus:border-green-500 focus:bg-white dark:focus:bg-gray-600 transition-all outline-none text-gray-900 dark:text-white"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows="4"
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 border-2 border-transparent focus:border-green-500 focus:bg-white dark:focus:bg-gray-600 transition-all outline-none text-gray-900 dark:text-white resize-none"
+                      placeholder="I'm interested in..."
+                    />
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    type="submit"
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-green-600 to-emerald-700 text-white font-bold text-lg shadow-lg shadow-green-500/30 hover:shadow-green-500/50 transition-all"
+                  >
+                    Send to WhatsApp
+                  </motion.button>
+                </form>
+              </div>
+            </motion.div>
+
+            {/* RIGHT: Info & Map */}
+            <motion.div variants={itemVariants} className="space-y-8">
+              
+              {/* Contact Details Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-green-400 transition-colors">
+                  <div className="text-4xl mb-4">📞</div>
+                  <h3 className="font-bold text-gray-900 dark:text-white">Phone / WhatsApp</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">{whatsappNumber}</p>
                 </div>
 
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="card-premium p-8 bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
-                >
-                  <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
-                    Follow Us
-                  </h2>
-                  <div className="flex space-x-4">
-                    {['📘', '📷', '🐦'].map((icon, index) => (
-                      <motion.a
-                        key={index}
-                        href="#"
-                        whileHover={{ scale: 1.2, rotate: 5 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="text-4xl hover:opacity-80 transition-opacity"
-                      >
-                        {icon}
-                      </motion.a>
-                    ))}
-                  </div>
-                </motion.div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+                <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-green-400 transition-colors">
+                  <div className="text-4xl mb-4">📧</div>
+                  <h3 className="font-bold text-gray-900 dark:text-white">Email</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">info@yalatravelcrew.com</p>
+                </div>
+
+                <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-green-400 transition-colors md:col-span-2">
+                  <div className="text-4xl mb-4">📍</div>
+                  <h3 className="font-bold text-gray-900 dark:text-white">Location</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1">
+                    Yala Travel Crew, Tissamaharama, Sri Lanka
+                  </p>
+                </div>
+              </div>
+
+              {/* Map Embed */}
+              <div className="h-64 md:h-80 w-full rounded-3xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 relative">
+                 <iframe 
+                   title="Yala Map"
+                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63480.84090598818!2d81.24838708754877!3d6.288258079532588!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae69c2885994f71%3A0xe744da5a570072b2!2sTissamaharama%2C%20Sri%20Lanka!5e0!3m2!1sen!2suk!4v1700000000000!5m2!1sen!2suk" 
+                   width="100%" 
+                   height="100%" 
+                   style={{border:0}} 
+                   allowFullScreen="" 
+                   loading="lazy" 
+                   referrerPolicy="no-referrer-when-downgrade"
+                   className="grayscale hover:grayscale-0 transition-all duration-700"
+                 ></iframe>
+                 {/* Map overlay gradient */}
+                 <div className="absolute inset-0 pointer-events-none border-4 border-white/20 rounded-3xl"></div>
+              </div>
+
+              {/* Social Links */}
+              <div className="flex justify-center gap-6">
+                {['📷', '📘', '🐦'].map((icon, i) => (
+                  <motion.a 
+                    key={i}
+                    href="#"
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    className="text-4xl bg-white dark:bg-gray-800 p-4 rounded-full shadow-md hover:shadow-xl transition-all"
+                  >
+                    {icon}
+                  </motion.a>
+                ))}
+              </div>
+
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
     </PageTransition>
   );

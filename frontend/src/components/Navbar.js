@@ -6,15 +6,19 @@ import ThemeToggle from './ThemeToggle';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    setIsAdminLoggedIn(!!token);
+  }, [location]);
 
   const isActive = (path) => location.pathname === path;
 
@@ -26,7 +30,13 @@ const Navbar = () => {
     { path: '/packages', label: 'Packages' },
     { path: '/gallery', label: 'Gallery' },
     { path: '/contact', label: 'Contact' },
+    { path: '/admin/login', label: 'Admin Login' }, // Fixed spacing here
   ];
+
+  // Add Admin link only if logged in
+  if (isAdminLoggedIn) {
+    navLinks.push({ path: '/admin', label: 'Admin' });
+  }
 
   return (
     <motion.nav
@@ -41,11 +51,8 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center"
-          >
+          {/* Logo */}
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex items-center">
             <Link to="/" className="flex-shrink-0">
               <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
                 Muthugala Tours
@@ -57,12 +64,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center">
             <div className="ml-10 flex items-baseline space-x-2">
               {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.path}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
+                <motion.div key={link.path} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
                   <Link
                     to={link.path}
                     className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
@@ -84,12 +86,12 @@ const Navbar = () => {
                 </motion.div>
               ))}
             </div>
-            <div className="ml-6">
+            <div className="ml-6 flex items-center gap-4">
               <ThemeToggle />
             </div>
           </div>
 
-          {/* Mobile menu button and theme toggle */}
+          {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-3">
             <ThemeToggle />
             <motion.button
@@ -106,19 +108,9 @@ const Navbar = () => {
                 transition={{ duration: 0.3 }}
               >
                 {isOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 )}
               </motion.svg>
             </motion.button>
@@ -138,12 +130,7 @@ const Navbar = () => {
           >
             <div className="px-4 pt-2 pb-4 space-y-2 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
               {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.path}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
+                <motion.div key={link.path} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}>
                   <Link
                     to={link.path}
                     onClick={() => setIsOpen(false)}

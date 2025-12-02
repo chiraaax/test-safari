@@ -1,15 +1,32 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Testimonials from '../components/Testimonials';
 import Stats from '../components/Stats';
 import Newsletter from '../components/Newsletter';
+
+const heroImages = [
+  "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80", // Elephant
+  "https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80", // Leopard/Cat
+  "https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80", // Jeep Safari
+  "https://images.unsplash.com/photo-1504221507732-5246c045949b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"  // Landscape
+];
 
 const Home = () => {
   const heroRef = useRef(null);
   const servicesRef = useRef(null);
   const featuresRef = useRef(null);
   
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Cycle through images every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
   const servicesInView = useInView(servicesRef, { once: true, amount: 0.2 });
   const featuresInView = useInView(featuresRef, { once: true, amount: 0.2 });
@@ -18,9 +35,7 @@ const Home = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.2 },
     },
   };
 
@@ -29,159 +44,168 @@ const Home = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-      },
+      transition: { duration: 0.6, ease: 'easeOut' },
     },
   };
 
   return (
     <div className="overflow-hidden">
-      {/* Hero Section */}
+      {/* ================= HERO SECTION ================= */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 pt-0"
       >
-        {/* Background Image Placeholder with Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary-700 to-primary-900">
-          <div 
-            className="absolute inset-0 opacity-20"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-            }}
-          ></div>
+        {/* 1. Background Image Slider */}
+        <div className="absolute inset-0 z-0 top-0">
+          <AnimatePresence mode='wait'>
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5 }}
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${heroImages[currentSlide]})` }}
+            />
+          </AnimatePresence>
+          {/* Dark Overlay for readability */}
+          <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
         </div>
 
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
+        {/* 2. Animated Blobs (Behind Glass) */}
+        <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
           <motion.div
-            className="absolute top-20 left-10 w-72 h-72 bg-primary-400/10 rounded-full blur-3xl"
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-[100px]"
             animate={{
               x: [0, 100, 0],
               y: [0, 50, 0],
               scale: [1, 1.2, 1],
             }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute bottom-20 right-10 w-96 h-96 bg-accent-400/10 rounded-full blur-3xl"
+            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-500/30 rounded-full blur-[100px]"
             animate={{
               x: [0, -100, 0],
               y: [0, -50, 0],
               scale: [1, 1.3, 1],
             }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
+            transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
           />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-center">
+        {/* 3. Liquid Glass Content Container */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 flex justify-center">
           {heroInView && (
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
+              className="w-full max-w-4xl"
             >
-              <motion.div variants={itemVariants}>
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="text-primary-200 dark:text-gray-300 text-lg md:text-xl font-semibold mb-4 tracking-wider uppercase"
-                >
-                  Premium Wildlife Safari Experiences
-                </motion.p>
-              </motion.div>
+              {/* GLASS CARD START */}
+              <div className="backdrop-blur-xl bg-white/10 dark:bg-black/20 border border-white/20 shadow-2xl rounded-3xl p-8 md:p-12 text-center overflow-hidden relative">
+                
+                {/* Glossy Reflection Effect */}
+                <div className="absolute -top-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
 
-              <motion.div variants={itemVariants}>
-                <motion.h1
-                  className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                >
-                  Discover Sri Lanka's
-                  <br />
-                  <span className="bg-gradient-to-r from-accent-300 via-accent-400 to-accent-500 bg-clip-text text-transparent">
-                    Wild Wonders
-                  </span>
-                </motion.h1>
-              </motion.div>
-
-              <motion.p
-                variants={itemVariants}
-                className="text-xl md:text-2xl lg:text-3xl mb-12 text-primary-100 font-light max-w-3xl mx-auto leading-relaxed"
-              >
-                Embark on unforgettable safari adventures with expert guides,
-                luxury accommodations, and exclusive wildlife encounters
-              </motion.p>
-
-              <motion.div
-                variants={itemVariants}
-                className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
-              >
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/tours"
-                    className="btn-primary text-lg px-10 py-4 inline-block shadow-2xl"
-                  >
-                    Explore Our Tours
-                  </Link>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/packages"
-                    className="btn-secondary text-lg px-10 py-4 inline-block shadow-2xl"
-                  >
-                    View Packages
-                  </Link>
-                </motion.div>
-              </motion.div>
-
-              {/* Trust Indicators */}
-              <motion.div
-                variants={itemVariants}
-                  className="flex flex-wrap justify-center items-center gap-8 text-primary-200 dark:text-gray-300 text-sm"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">✓</span>
-                  <span>15+ Years Experience</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">✓</span>
-                  <span>50K+ Happy Customers</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">✓</span>
-                  <span>Expert Guides</span>
-                </div>
-              </motion.div>
-
-              {/* Scroll Indicator */}
-              <motion.div
-                className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+                <motion.div variants={itemVariants}>
                   <motion.div
-                    className="w-1 h-3 bg-white/50 rounded-full mt-2"
-                    animate={{ y: [0, 12, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-              </motion.div>
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="inline-block mb-4 px-4 py-1 rounded-full border border-white/30 bg-white/5 backdrop-blur-md"
+                  >
+                    <span className="text-primary-100 text-sm md:text-base font-semibold tracking-widest uppercase drop-shadow-md">
+                      Premium Wildlife Safari Experiences
+                    </span>
+                  </motion.div>
+                </motion.div>
+
+                <motion.div variants={itemVariants}>
+                  <motion.h1
+                    className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                  >
+                    Discover Sri Lanka's
+                    <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-white filter drop-shadow-lg">
+                      Wild Wonders
+                    </span>
+                  </motion.h1>
+                </motion.div>
+
+                <motion.p
+                  variants={itemVariants}
+                  className="text-lg md:text-xl lg:text-2xl mb-10 text-gray-100 font-light max-w-2xl mx-auto leading-relaxed drop-shadow-md"
+                >
+                  Embark on unforgettable safari adventures with expert guides,
+                  luxury accommodations, and exclusive wildlife encounters.
+                </motion.p>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="flex flex-col sm:flex-row gap-5 justify-center items-center"
+                >
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      to="/tours"
+                      className="btn-primary text-lg px-8 py-3 rounded-xl shadow-lg shadow-primary-900/50 border border-transparent hover:border-primary-400 transition-all"
+                    >
+                      Explore Our Tours
+                    </Link>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link
+                      to="/packages"
+                      className="bg-white/10 backdrop-blur-md border border-white/40 text-white text-lg px-8 py-3 rounded-xl hover:bg-white/20 transition-all shadow-lg"
+                    >
+                      View Packages
+                    </Link>
+                  </motion.div>
+                </motion.div>
+
+                {/* Trust Indicators inside Glass */}
+                <motion.div
+                  variants={itemVariants}
+                  className="mt-12 pt-8 border-t border-white/10 flex flex-wrap justify-center items-center gap-6 md:gap-12 text-gray-200 text-sm font-medium"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-accent-300 text-xl">✓</span>
+                    <span className="drop-shadow-sm">15+ Years Experience</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-accent-300 text-xl">✓</span>
+                    <span className="drop-shadow-sm">50K+ Happy Customers</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-accent-300 text-xl">✓</span>
+                    <span className="drop-shadow-sm">Expert Guides</span>
+                  </div>
+                </motion.div>
+              </div> 
+              {/* GLASS CARD END */}
             </motion.div>
           )}
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center backdrop-blur-sm bg-black/10">
+            <motion.div
+              className="w-1 h-3 bg-white rounded-full mt-2"
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+          </div>
+        </motion.div>
       </section>
 
       {/* Stats Section */}
