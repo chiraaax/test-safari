@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getRentals } from '../services/api';
 import PageTransition from '../components/PageTransition';
 
@@ -7,6 +8,10 @@ const Rentals = () => {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState('all');
+
+  // WhatsApp Config
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94772217970";
+  const formattedNumber = whatsappNumber.replace(/[^0-9]/g, '');
 
   // WhatsApp Config
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94772217970";
@@ -45,6 +50,16 @@ const Rentals = () => {
         </motion.div>
       </div>
     );
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+          className="text-6xl"
+        >
+          🚙
+        </motion.div>
+      </div>
+    );
   }
 
   return (
@@ -61,13 +76,36 @@ const Rentals = () => {
             />
             <div className="absolute inset-0 bg-black/50" />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30" />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        
+        {/* ================= HERO SECTION ================= */}
+        <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="https://images.unsplash.com/photo-1506015391300-4802dc74de2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+              alt="Safari Vehicle Hero" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30" />
           </div>
+
+          <motion.div 
 
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             className="relative z-10 text-center px-4"
+            className="relative z-10 text-center px-4"
           >
+            <div className="backdrop-blur-md bg-white/10 dark:bg-black/40 border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl inline-block max-w-3xl">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
+                Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-500">Fleet</span>
+              </h1>
+              <p className="text-lg text-gray-200">
+                Choose your perfect ride for the adventure of a lifetime
+              </p>
+            </div>
             <div className="backdrop-blur-md bg-white/10 dark:bg-black/40 border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl inline-block max-w-3xl">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
                 Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-500">Fleet</span>
@@ -83,10 +121,17 @@ const Rentals = () => {
         <div className="sticky top-24 z-30 py-6 px-4 pointer-events-none">
           <div className="max-w-7xl mx-auto flex justify-center pointer-events-auto">
             <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 p-2 rounded-full shadow-lg flex flex-wrap justify-center gap-2">
+        {/* ================= FILTER SECTION ================= */}
+        <div className="sticky top-24 z-30 py-6 px-4 pointer-events-none">
+          <div className="max-w-7xl mx-auto flex justify-center pointer-events-auto">
+            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 p-2 rounded-full shadow-lg flex flex-wrap justify-center gap-2">
               {vehicleTypes.map((type) => (
+                <button
                 <button
                   key={type}
                   onClick={() => setSelectedType(type)}
+                  className={`relative px-6 py-2 rounded-full text-sm font-semibold capitalize transition-colors duration-300 ${
+                    selectedType === type ? 'text-white' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                   className={`relative px-6 py-2 rounded-full text-sm font-semibold capitalize transition-colors duration-300 ${
                     selectedType === type ? 'text-white' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                   }`}
@@ -100,11 +145,25 @@ const Rentals = () => {
                   )}
                   <span className="relative z-10">{type}</span>
                 </button>
+                  {selectedType === type && (
+                    <motion.div
+                      layoutId="activeRentalFilter"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full shadow-md"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-10">{type}</span>
+                </button>
               ))}
             </div>
           </div>
         </div>
+        </div>
 
+        {/* ================= RENTALS GRID ================= */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-4">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence>
         {/* ================= RENTALS GRID ================= */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-4">
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -118,9 +177,26 @@ const Rentals = () => {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4 }}
                   className="group relative bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300"
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4 }}
+                  className="group relative bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300"
                 >
                   {/* Image Area */}
+                  {/* Image Area */}
                   <div className="relative h-64 overflow-hidden">
+                    <img 
+                      src={rental.image} 
+                      alt={rental.vehicleName}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-60" />
+                    
+                    {/* Top Badges */}
+                    <div className="absolute top-4 right-4 flex flex-col gap-2 items-end">
+                      <span className="bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                     <img 
                       src={rental.image} 
                       alt={rental.vehicleName}
@@ -135,9 +211,12 @@ const Rentals = () => {
                       </span>
                       {rental.available ? (
                         <span className="bg-green-500/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        <span className="bg-green-500/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                           Available
                         </span>
                       ) : (
+                        <span className="bg-red-500/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                          Booked
                         <span className="bg-red-500/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
                           Booked
                         </span>
@@ -150,17 +229,33 @@ const Rentals = () => {
                       <div className="flex items-center gap-3 text-xs opacity-90 mt-1 font-medium">
                         <span className="bg-black/30 px-2 py-1 rounded">👥 {rental.capacity} Seats</span>
                         <span className="bg-black/30 px-2 py-1 rounded">⛽ {rental.fuel}</span>
+
+                    {/* Title on Image */}
+                    <div className="absolute bottom-4 left-4 text-white">
+                      <h3 className="text-2xl font-bold drop-shadow-md">{rental.vehicleName}</h3>
+                      <div className="flex items-center gap-3 text-xs opacity-90 mt-1 font-medium">
+                        <span className="bg-black/30 px-2 py-1 rounded">👥 {rental.capacity} Seats</span>
+                        <span className="bg-black/30 px-2 py-1 rounded">⛽ {rental.fuel}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Content Area */}
+                  {/* Content Area */}
                   <div className="p-6">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
                     <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
                       {rental.description}
                     </p>
 
+
                     {/* Features */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {rental.features?.map((feature, idx) => (
+                        <span key={idx} className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-md font-medium">
+                          {feature}
+                        </span>
+                      ))}
                     <div className="flex flex-wrap gap-2 mb-6">
                       {rental.features?.map((feature, idx) => (
                         <span key={idx} className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-md font-medium">
@@ -171,7 +266,11 @@ const Rentals = () => {
 
                     {/* Footer */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                       <div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Daily Rate</p>
+                        <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
                         <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Daily Rate</p>
                         <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
                           LKR {rental.pricePerDay.toLocaleString()}
@@ -186,15 +285,34 @@ const Rentals = () => {
                           rental.available 
                            ? "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-500/30"
                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      <a
+                        href={`https://wa.me/${formattedNumber}?text=Hi, I am interested in renting the ${rental.vehicleName}. Is it available?`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`px-6 py-2 rounded-xl font-bold text-sm shadow-lg transition-all transform active:scale-95 ${
+                          rental.available 
+                           ? "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-500/30"
+                           : "bg-gray-300 text-gray-500 cursor-not-allowed"
                         }`}
+                        onClick={(e) => !rental.available && e.preventDefault()}
                         onClick={(e) => !rental.available && e.preventDefault()}
                       >
                         {rental.available ? 'Rent Now' : 'Unavailable'}
+                      </a>
                       </a>
                     </div>
                   </div>
                 </motion.div>
               ))}
+            </AnimatePresence>
+          </motion.div>
+          
+          {filteredRentals.length === 0 && (
+            <div className="text-center py-20">
+              <div className="text-5xl mb-4">🚙</div>
+              <p className="text-gray-500">No vehicles found in this category.</p>
+            </div>
+          )}
             </AnimatePresence>
           </motion.div>
           
