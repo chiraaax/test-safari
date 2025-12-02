@@ -2,65 +2,58 @@ const express = require('express');
 const router = express.Router();
 const Package = require('../models/Package');
 
-// Get all packages
+// GET all packages
 router.get('/', async (req, res) => {
   try {
     const packages = await Package.find();
     res.json(packages);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-// Get single package
+// GET single package by ID
 router.get('/:id', async (req, res) => {
   try {
-    const package = await Package.findById(req.params.id);
-    if (!package) {
-      return res.status(404).json({ message: 'Package not found' });
-    }
-    res.json(package);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const pkg = await Package.findById(req.params.id);
+    if (!pkg) return res.status(404).json({ message: 'Package not found' });
+    res.json(pkg);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-// Create package
+// CREATE a new package
 router.post('/', async (req, res) => {
+  const pkg = new Package(req.body);
   try {
-    const package = new Package(req.body);
-    const savedPackage = await package.save();
-    res.status(201).json(savedPackage);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    const newPkg = await pkg.save();
+    res.status(201).json(newPkg);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 });
 
-// Update package
+// UPDATE a package
 router.put('/:id', async (req, res) => {
   try {
-    const package = await Package.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!package) {
-      return res.status(404).json({ message: 'Package not found' });
-    }
-    res.json(package);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+    const updatedPkg = await Package.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedPkg) return res.status(404).json({ message: 'Package not found' });
+    res.json(updatedPkg);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 });
 
-// Delete package
+// DELETE a package
 router.delete('/:id', async (req, res) => {
   try {
-    const package = await Package.findByIdAndDelete(req.params.id);
-    if (!package) {
-      return res.status(404).json({ message: 'Package not found' });
-    }
-    res.json({ message: 'Package deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const deletedPkg = await Package.findByIdAndDelete(req.params.id);
+    if (!deletedPkg) return res.status(404).json({ message: 'Package not found' });
+    res.json({ message: 'Package deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
 module.exports = router;
-

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { getTours } from '../services/api';
 import PageTransition from '../components/PageTransition';
 
@@ -14,114 +15,65 @@ const Tours = () => {
 
   const fetchTours = async () => {
     try {
+      // Attempt to fetch from API
       const response = await getTours();
       setTours(response.data);
     } catch (error) {
-      console.error('Error fetching tours:', error);
-
-      // 🔥 FALLBACK DATA (now includes images)
+      console.log('Using fallback data');
+      
+      // 🔥 FALLBACK DATA with Real Images
       setTours([
         {
           _id: '1',
-          title: 'Yala National Park Safari',
-          image: '/images/yala.jpg',
-          description:
-            'Experience the thrill of spotting leopards, elephants, and diverse bird species in Yala National Park. One of the best places in the world to see leopards in their natural habitat.',
+          title: 'Yala Leopard Safari',
+          image: 'https://images.unsplash.com/photo-1634547481136-193496c14170?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          description: 'Track the elusive leopards in their highest density kingdom. A thrilling 4x4 adventure through the thorny scrub jungle.',
           duration: 'Full Day',
           price: 15000,
-          location: 'Yala',
+          location: 'Yala National Park',
           difficulty: 'Easy',
           maxParticipants: 6,
-          includes: [
-            'Park Entry',
-            'Expert Guide',
-            'Lunch',
-            'Transportation',
-            'Binoculars',
-            'Refreshments',
-          ],
-          highlights: [
-            'Leopard Spotting',
-            'Elephant Herds',
-            'Bird Watching',
-            'Photography',
-          ],
-          bestTime: 'Early Morning / Evening',
+          includes: ['Park Entry', 'Jeep', 'Lunch', 'Binoculars'],
+          bestTime: 'Early Morning',
         },
         {
           _id: '2',
-          title: 'Udawalawe Elephant Safari',
-          image: '/images/udawalawe.webp',
-          description:
-            'Witness majestic elephants in their natural habitat at Udawalawe National Park. Home to over 500 elephants, this park offers incredible opportunities for elephant watching.',
+          title: 'Udawalawe Elephant Gathering',
+          image: 'https://images.unsplash.com/photo-1581850518616-bcb8077a2536?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          description: 'Witness hundreds of Asian elephants in their natural habitat. Perfect for families and elephant lovers.',
           duration: 'Half Day',
           price: 8000,
           location: 'Udawalawe',
           difficulty: 'Easy',
           maxParticipants: 8,
-          includes: [
-            'Park Entry',
-            'Expert Guide',
-            'Transportation',
-            'Refreshments',
-          ],
-          highlights: [
-            'Elephant Herds',
-            'Wildlife Photography',
-            'Scenic Views',
-          ],
-          bestTime: 'Morning / Afternoon',
+          includes: ['Park Entry', 'Guide', 'Water'],
+          bestTime: 'Afternoon',
         },
         {
           _id: '3',
-          title: 'Sinharaja Rainforest Tour',
-          image: '/images/sinharaja.jpg',
-          description:
-            'Explore the biodiversity hotspot of Sinharaja with guided nature walks. A UNESCO World Heritage Site with endemic species and pristine rainforest ecosystem.',
+          title: 'Sinharaja Rainforest Trek',
+          image: 'https://images.unsplash.com/photo-1448375240586-dfd8d395ea6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          description: 'Walk through a UNESCO World Heritage site. Discover endemic birds, rare lizards, and the lush canopy of the rainforest.',
           duration: 'Full Day',
           price: 12000,
           location: 'Sinharaja',
           difficulty: 'Medium',
           maxParticipants: 10,
-          includes: [
-            'Park Entry',
-            'Nature Guide',
-            'Lunch',
-            'Transportation',
-            'Safety Equipment',
-          ],
-          highlights: [
-            'Endemic Birds',
-            'Rare Species',
-            'Nature Walks',
-            'Photography',
-          ],
-          bestTime: 'Early Morning',
+          includes: ['Leech Protection', 'Guide', 'Lunch'],
+          bestTime: 'Morning',
         },
         {
           _id: '4',
-          title: 'Wilpattu Leopard Safari',
-          image: '/images/wilpattu.jpg',
-          description:
-            'Discover the largest national park in Sri Lanka, famous for its leopard population and natural lakes. Experience the wilderness in its purest form.',
+          title: 'Wilpattu Lakes & Leopards',
+          image: 'https://images.unsplash.com/photo-1541793855655-e46fa2d2a4c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+          description: 'Explore Sri Lanka\'s largest park, known for its natural sand rimmed lakes (Willus) and high leopard activity.',
           duration: 'Full Day',
           price: 18000,
           location: 'Wilpattu',
           difficulty: 'Medium',
           maxParticipants: 6,
-          includes: [
-            'Park Entry',
-            'Expert Guide',
-            'Lunch',
-            'Transportation',
-            'Binoculars',
-          ],
-          highlights: [
-            'Leopard Tracking',
-            'Natural Lakes',
-            'Wildlife Diversity',
-          ],
-          bestTime: 'Early Morning',
+          includes: ['Full Board', 'Luxury Jeep', 'Guide'],
+          bestTime: 'Full Day',
         },
       ]);
     } finally {
@@ -130,230 +82,192 @@ const Tours = () => {
   };
 
   const filters = ['all', 'easy', 'medium', 'hard'];
-  const filteredTours =
-    selectedFilter === 'all'
-      ? tours
-      : tours.filter((tour) => tour.difficulty.toLowerCase() === selectedFilter);
+  const filteredTours = selectedFilter === 'all'
+    ? tours
+    : tours.filter((tour) => tour.difficulty.toLowerCase() === selectedFilter);
 
+  // Loading Screen
   if (loading) {
     return (
-      <PageTransition>
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
-            <motion.div
-              className="text-6xl mb-4"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-            >
-              🦁
-            </motion.div>
-            <p className="text-gray-600 text-lg">Loading amazing tours...</p>
-          </motion.div>
-        </div>
-      </PageTransition>
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+          className="w-16 h-16 border-t-4 border-green-500 border-solid rounded-full"
+        />
+      </div>
     );
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  };
-
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        
+        {/* ================= HERO SECTION ================= */}
+        <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+              alt="Safari Hero" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/50" />
+             <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30" />
+          </div>
 
-        {/* Header */}
-        <section className="relative bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white py-28 overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
-
-          <motion.div
+          <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative z-10 max-w-7xl mx-auto px-4 text-center"
+            className="relative z-10 text-center px-4"
           >
-            <h1 className="text-6xl font-bold mb-6">
-              Wildlife <span className="text-accent-300">Safari Tours</span>
-            </h1>
-            <p className="text-xl text-primary-100 max-w-3xl mx-auto">
-              Discover the wild beauty of Sri Lanka with our expert-guided experiences.
-            </p>
+            <div className="backdrop-blur-md bg-white/10 dark:bg-black/40 border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl inline-block max-w-3xl">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
+                Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">Adventures</span>
+              </h1>
+              <p className="text-lg text-gray-200">
+                Choose your path through the wild heart of Sri Lanka
+              </p>
+            </div>
           </motion.div>
         </section>
 
-        {/* Filter */}
-        <section className="py-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-20 z-40 shadow-sm">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-4">
+        {/* ================= FILTER SECTION ================= */}
+        <div className="sticky top-24 z-30 py-6 px-4 pointer-events-none">
+          <div className="max-w-7xl mx-auto flex justify-center pointer-events-auto">
+            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 p-2 rounded-full shadow-lg flex gap-2">
               {filters.map((filter) => (
-                <motion.button
+                <button
                   key={filter}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedFilter(filter)}
-                  className={`px-6 py-2 rounded-full font-semibold text-sm transition-all duration-300 ${
-                    selectedFilter === filter
-                      ? 'bg-primary-600 text-white shadow-lg'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                  className={`relative px-6 py-2 rounded-full text-sm font-semibold capitalize transition-colors duration-300 ${
+                    selectedFilter === filter ? 'text-white' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                   }`}
                 >
-                  {filter.charAt(0).toUpperCase() + filter.slice(1)}
-                </motion.button>
+                  {selectedFilter === filter && (
+                    <motion.div
+                      layoutId="activeFilter"
+                      className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-md"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-10">{filter}</span>
+                </button>
               ))}
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* Tours */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4">
-
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-            >
+        {/* ================= TOURS GRID ================= */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-4">
+          <motion.div 
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8"
+          >
+            <AnimatePresence>
               {filteredTours.map((tour) => (
                 <motion.div
                   key={tour._id}
-                  variants={cardVariants}
-                  whileHover={{ y: -10, scale: 1.01 }}
-                  className="card-premium overflow-hidden group bg-white dark:bg-gray-800/90 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700"
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4 }}
+                  className="group relative h-[500px] rounded-3xl overflow-hidden shadow-2xl cursor-pointer"
                 >
-                  {/* 🔥 IMAGE SECTION */}
-                  <div className="relative h-80 overflow-hidden">
-                    <img
-                      src={tour.image}
-                      alt={tour.title}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
+                  {/* Background Image */}
+                  <img 
+                    src={tour.image} 
+                    alt={tour.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
-
-                    <div className="absolute top-6 right-6">
-                      <span className="bg-white/90 text-primary-700 px-4 py-1.5 rounded-full text-xs font-bold shadow">
-                        {tour.difficulty}
-                      </span>
-                    </div>
-
-                    <div className="absolute bottom-6 left-6 text-white">
-                      <h3 className="text-3xl font-bold mb-1">{tour.title}</h3>
-                      <div className="flex gap-4 text-sm opacity-90">
-                        <span>📍 {tour.location}</span>
-                        <span>⏱️ {tour.duration}</span>
-                      </div>
-                    </div>
+                  {/* Top Badges */}
+                  <div className="absolute top-6 left-6 flex gap-2">
+                    <span className="bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                      {tour.location}
+                    </span>
+                    <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border backdrop-blur-md
+                      ${tour.difficulty === 'Easy' ? 'bg-green-500/80 border-green-400 text-white' : 
+                        tour.difficulty === 'Medium' ? 'bg-yellow-500/80 border-yellow-400 text-white' : 
+                        'bg-red-500/80 border-red-400 text-white'}`}
+                    >
+                      {tour.difficulty}
+                    </span>
                   </div>
 
-                  {/* CONTENT */}
-                  <div className="p-8">
-                    <p className="text-gray-700 dark:text-gray-300 mb-6">{tour.description}</p>
-
-                    {/* Highlights */}
-                    {tour.highlights?.length > 0 && (
-                      <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                        <p className="text-sm font-bold mb-3">Tour Highlights</p>
-                        <div className="grid grid-cols-2 gap-2">
-                          {tour.highlights.map((h, idx) => (
-                            <div key={idx} className="flex items-center text-sm">
-                              <span className="text-primary-600 mr-2">✓</span>
-                              {h}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Info Boxes */}
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                        <p className="text-xs opacity-60">Best Time</p>
-                        <p className="font-semibold">{tour.bestTime}</p>
-                      </div>
-                      <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                        <p className="text-xs opacity-60">Max Group Size</p>
-                        <p className="font-semibold">{tour.maxParticipants} People</p>
+                  {/* Content Container (Bottom) */}
+                  <div className="absolute bottom-0 left-0 w-full p-8 transform transition-transform duration-500">
+                    <h2 className="text-3xl font-bold text-white mb-2 leading-tight">{tour.title}</h2>
+                    
+                    {/* Expandable Content */}
+                    <div className="h-0 group-hover:h-auto overflow-hidden transition-all duration-500">
+                       <p className="text-gray-300 mb-4 line-clamp-2 group-hover:line-clamp-none transition-all">
+                        {tour.description}
+                      </p>
+                      
+                      {/* Features Icons */}
+                      <div className="flex flex-wrap gap-3 mb-6">
+                        {tour.includes.slice(0, 3).map((item, idx) => (
+                          <span key={idx} className="text-xs text-gray-300 bg-white/10 px-2 py-1 rounded border border-white/10">
+                            ✓ {item}
+                          </span>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Includes */}
-                    {tour.includes?.length > 0 && (
-                      <div className="mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                        <p className="text-sm font-bold mb-3">What's Included</p>
-                        <div className="flex flex-wrap gap-2">
-                          {tour.includes.map((item, idx) => (
-                            <span
-                              key={idx}
-                              className="bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1.5 rounded text-xs"
-                            >
-                              {item}
-                            </span>
-                          ))}
-                        </div>
+                    {/* Footer Row */}
+                    <div className="flex justify-between items-center mt-2 border-t border-white/20 pt-4">
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-400 uppercase">Per Person</span>
+                        <span className="text-2xl font-bold text-green-400">LKR {tour.price.toLocaleString()}</span>
                       </div>
-                    )}
-
-                    {/* Price + Button */}
-                    <div className="flex justify-between items-center pt-6">
-                      <div>
-                        <span className="text-sm opacity-70 block">Starting from</span>
-                        <p className="text-4xl font-bold text-primary-600">
-                          LKR {tour.price.toLocaleString()}
-                        </p>
-                        <span className="text-xs opacity-70">per person</span>
-                      </div>
-
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        className="bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold shadow-lg"
-                      >
-                        Book Now
-                      </motion.button>
+                      
+                      <Link to="/booking">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="bg-white text-gray-900 px-6 py-2 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors"
+                        >
+                          Book Now
+                        </motion.button>
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </AnimatePresence>
+          </motion.div>
 
-            {filteredTours.length === 0 && (
-              <div className="text-center py-20">
-                <p className="text-gray-600 dark:text-gray-300 text-lg">
-                  No tours found for this filter.
-                </p>
-              </div>
-            )}
-          </div>
+          {filteredTours.length === 0 && (
+            <div className="text-center py-24">
+              <div className="text-6xl mb-4">🦁</div>
+              <h3 className="text-2xl font-bold text-gray-600 dark:text-gray-400">No tours found</h3>
+              <p className="text-gray-500">Try changing your filter settings</p>
+            </div>
+          )}
         </section>
 
-        {/* CTA */}
-        <section className="py-20 bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
-              <h2 className="text-5xl font-bold mb-6">Need a Custom Tour?</h2>
-              <p className="text-xl opacity-90 mb-10">
-                Contact us to create a personalized safari experience.
-              </p>
-              <a
-                href="/contact"
-                className="bg-white text-primary-600 px-10 py-4 rounded-lg font-semibold inline-block shadow-xl"
-              >
-                Contact Us
-              </a>
-            </motion.div>
-          </div>
+        {/* ================= CTA SECTION ================= */}
+        <section className="relative py-24 overflow-hidden">
+           <div className="absolute inset-0 bg-green-900">
+             <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
+           </div>
+           
+           <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
+             <h2 className="text-4xl font-bold text-white mb-6">Need a Custom Experience?</h2>
+             <p className="text-green-100 text-lg mb-8 max-w-2xl mx-auto">
+               We can tailor a safari specifically to your interests, whether you're a photographer, bird watcher, or family group.
+             </p>
+             <Link 
+               to="/contact"
+               className="inline-block bg-white text-green-900 font-bold py-4 px-10 rounded-full shadow-2xl hover:scale-105 transition-transform"
+             >
+               Plan My Custom Tour
+             </Link>
+           </div>
         </section>
       </div>
     </PageTransition>

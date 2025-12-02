@@ -13,9 +13,15 @@ import Tours from './pages/Tours';
 import Rentals from './pages/Rentals';
 import Packages from './pages/Packages';
 import WhatsAppButton from './components/WhatsAppButton';
+import AdminDashboard from "./pages/admin";
+import AdminLogin from './pages/AdminLogin';
+import PrivateRoute from './components/PrivateRoute';
+import AdminTours from "./pages/AdminTours";
+import AdminRentals from "./pages/AdminRentals";
+import AdminPackages from "./pages/AdminPackages";
 
-// ✅ FIX 1: Wrap route transitions inside a separate component
-// This prevents re-mount issues & scroll-lag caused by double-render.
+
+// Animated routes
 function AnimatedRoutes() {
   const location = useLocation();
 
@@ -29,28 +35,27 @@ function AnimatedRoutes() {
         <Route path="/tours" element={<Tours />} />
         <Route path="/rentals" element={<Rentals />} />
         <Route path="/packages" element={<Packages />} />
-        
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<PrivateRoute> <AdminDashboard /> </PrivateRoute>}/>
+        <Route path="/admin/tours" element={<PrivateRoute> <AdminTours /></PrivateRoute>  }/>
+        <Route path="/admin/rentals" element={<PrivateRoute> <AdminRentals /></PrivateRoute> }/>
+        <Route path="/admin/packages" element={<PrivateRoute> <AdminPackages /></PrivateRoute> }/>
       </Routes>
       <WhatsAppButton />
     </AnimatePresence>
   );
 }
 
-
 function App() {
   return (
     <ThemeProvider>
       <Router>
-        {/* FIX 2: Scroll restoration must be OUTSIDE components that re-render */}
         <ScrollToTop />
         <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
           <Navbar />
-
-          {/* FIX 3: Keep transitions smooth, avoid conflicting height/layout shifts */}
           <main className="flex-grow pt-20">
             <AnimatedRoutes />
           </main>
-
           <Footer />
         </div>
       </Router>
