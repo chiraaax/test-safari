@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Rental = require("../models/Rental");
+const CarRental = require("../models/CarRental");
 
 // CREATE
 router.post("/", async (req, res) => {
   try {
-    const rental = new Rental(req.body);
+    const rental = new CarRental(req.body);
     await rental.save();
     res.status(201).json(rental);
   } catch (error) {
@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
 // GET ALL
 router.get("/", async (req, res) => {
   try {
-    const rentals = await Rental.find();
+    const rentals = await CarRental.find();
     res.json(rentals);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
 // GET SINGLE
 router.get("/:id", async (req, res) => {
   try {
-    const rental = await Rental.findById(req.params.id);
+    const rental = await CarRental.findById(req.params.id);
     if (!rental) return res.status(404).json({ message: "Not found" });
     res.json(rental);
   } catch (error) {
@@ -37,7 +37,7 @@ router.get("/:id", async (req, res) => {
 // UPDATE
 router.put("/:id", async (req, res) => {
   try {
-    const rental = await Rental.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const rental = await CarRental.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(rental);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -47,7 +47,7 @@ router.put("/:id", async (req, res) => {
 // DELETE
 router.delete("/:id", async (req, res) => {
   try {
-    await Rental.findByIdAndDelete(req.params.id);
+    await CarRental.findByIdAndDelete(req.params.id);
     res.json({ message: "Deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
