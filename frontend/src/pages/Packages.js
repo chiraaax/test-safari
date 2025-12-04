@@ -8,8 +8,14 @@ const Packages = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
 
+  // Backend base URL for images
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const getImageUrl = (imagePath) => {
+    return imagePath ? `${API_URL}${imagePath}` : 'https://via.placeholder.com/400x300?text=No+Image';
+  };
+
   // WhatsApp Config
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94772217970";
+  const whatsappNumber = process.env.REACT_APP_WHATSAPP_NUMBER || "+94772217970";
   const formattedNumber = whatsappNumber.replace(/[^0-9]/g, '');
 
   useEffect(() => {
@@ -19,7 +25,8 @@ const Packages = () => {
   const fetchPackages = async () => {
     try {
       const response = await getPackages();
-      setPackages(response.data);
+      console.log('Fetched packages:', response.data); // Debug: Check if images are relative paths
+      setPackages(response.data || []);
     } catch (error) {
       console.error('Error fetching packages:', error);
       setPackages([]); // fallback: empty array
@@ -122,9 +129,13 @@ const Packages = () => {
                   {/* Image Header */}
                   <div className="relative h-72 overflow-hidden">
                     <img 
-                      src={pkg.image} 
+                      src={getImageUrl(pkg.image)} // Fixed: Use full URL
                       alt={pkg.name}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      onError={(e) => {
+                        console.error('Image load error:', pkg.image); // Debug
+                        e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent opacity-80" />
                     
@@ -186,7 +197,7 @@ const Packages = () => {
                         <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                           LKR {pkg.price.toLocaleString()}
                         </div>
-                        <span className="text-xs text-gray-400">per person</span>
+                       
                       </div>
 
                       <a

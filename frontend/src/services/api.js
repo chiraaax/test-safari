@@ -33,12 +33,21 @@ export const updateRental = (id, data) => apiUpload.put(`/rentals/${id}`, data);
 export const deleteRental = (id) => api.delete(`/rentals/${id}`);
 
 // ====================
-// Packages API (unchanged)
+// Packages API (updated to use FormData for uploads)
 // ====================
 export const getPackages = () => api.get(`/packages`);
 export const getPackage = (id) => api.get(`/packages/${id}`);
-export const createPackage = (data) => api.post(`/packages`, data);
-export const updatePackage = (id, data) => api.put(`/packages/${id}`, data);
+export const createPackage = (data) => apiUpload.post(`/packages`, data); // Changed to apiUpload for FormData
+export const updatePackage = (id, data) => apiUpload.put(`/packages/${id}`, data); // Changed to apiUpload for FormData
 export const deletePackage = (id) => api.delete(`/packages/${id}`);
+
+// ====================
+// Gallery API (new)
+// ====================
+export const getGallerys = () => api.get(`/gallery`);
+export const getGalleryById = (id) => api.get(`/gallery/${id}`);
+export const createGallery = (data) => apiUpload.post(`/gallery`, data); // Use FormData for upload
+export const updateGallery = (id, data) => apiUpload.put(`/gallery/${id}`, data); // Use FormData for upload
+export const deleteGallery = (id) => api.delete(`/gallery/${id}`);
 
 export default api;
