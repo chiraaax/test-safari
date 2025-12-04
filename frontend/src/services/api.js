@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-// Create axios instance
+// Create axios instance for JSON
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -10,8 +10,13 @@ const api = axios.create({
   },
 });
 
+// Create instance for file uploads (no Content-Type, let browser set multipart)
+const apiUpload = axios.create({
+  baseURL: API_URL,
+});
+
 // ====================
-// Tours API
+// Tours API (unchanged)
 // ====================
 export const getTours = () => api.get(`/tours`);
 export const getTourById = (id) => api.get(`/tours/${id}`);
@@ -23,12 +28,12 @@ export const deleteTour = (id) => api.delete(`/tours/${id}`);
 // Rentals API
 // ====================
 export const getRentals = () => api.get(`/rentals`);
-export const createRental = (data) => api.post(`/rentals`, data);
-export const updateRental = (id, data) => api.put(`/rentals/${id}`, data);
+export const createRental = (data) => apiUpload.post(`/rentals`, data); // Use FormData
+export const updateRental = (id, data) => apiUpload.put(`/rentals/${id}`, data); // Use FormData
 export const deleteRental = (id) => api.delete(`/rentals/${id}`);
 
 // ====================
-// Packages API
+// Packages API (unchanged)
 // ====================
 export const getPackages = () => api.get(`/packages`);
 export const getPackage = (id) => api.get(`/packages/${id}`);

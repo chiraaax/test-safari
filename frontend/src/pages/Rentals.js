@@ -12,6 +12,13 @@ const Rentals = () => {
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94772217970";
   const formattedNumber = whatsappNumber.replace(/[^0-9]/g, '');
 
+  // Backend URL for images (Strip /api from API_URL for static files)
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const BASE_URL = API_URL.replace('/api', ''); // e.g., 'http://localhost:5000'
+  const getImageUrl = (imagePath) => {
+    return imagePath ? `${BASE_URL}${imagePath}` : '/placeholder.jpg';
+  };
+
   useEffect(() => {
     fetchRentals();
   }, []);
@@ -19,11 +26,11 @@ const Rentals = () => {
   const fetchRentals = async () => {
     try {
       const response = await getRentals();
-      setRentals(response.data);
-    } catch(error) {
-  console.error("Error fetching rentals:", error);
-  setRentals([]); // no fallback
-} finally {
+      setRentals(response.data || []);
+    } catch (error) {
+      console.error("Error fetching rentals:", error);
+      setRentals([]); // no fallback
+    } finally {
       setLoading(false);
     }
   };
@@ -122,9 +129,12 @@ const Rentals = () => {
                   {/* Image Area */}
                   <div className="relative h-64 overflow-hidden">
                     <img 
-                      src={rental.image} 
+                      src={getImageUrl(rental.image)} // Fixed: Use getImageUrl for full path
                       alt={rental.vehicleName}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/400x256?text=No+Image'; // Fallback
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-60" />
                     
@@ -148,7 +158,7 @@ const Rentals = () => {
                     <div className="absolute bottom-4 left-4 text-white">
                       <h3 className="text-2xl font-bold drop-shadow-md">{rental.vehicleName}</h3>
                       <div className="flex items-center gap-3 text-xs opacity-90 mt-1 font-medium">
-                        <span className="bg-black/30 px-2 py-1 rounded">👥 {rental.capacity} Seats</span>
+                        <span className="bg-black/30 px-2 py-1 rounded">👥 {rental.seats} Seats</span> {/* Fixed: seats instead of capacity */}
                         <span className="bg-black/30 px-2 py-1 rounded">⛽ {rental.fuel}</span>
                       </div>
                     </div>
@@ -162,19 +172,19 @@ const Rentals = () => {
 
                     {/* Features */}
                     <div className="flex flex-wrap gap-2 mb-6">
-                      {rental.features?.map((feature, idx) => (
+                      {(rental.features || []).map((feature, idx) => ( // Fixed: Handle undefined features
                         <span key={idx} className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-md font-medium">
                           {feature}
                         </span>
                       ))}
                     </div>
 
-                    {/* Footer */}
+                    {/* Footer - Removed price, added contact info */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                       <div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Daily Rate</p>
-                        <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                          LKR {rental.pricePerDay.toLocaleString()}
+                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Ready to Rent</p>
+                        <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                          {rental.available ? 'Available Now' : 'Check Availability'}
                         </p>
                       </div>
 

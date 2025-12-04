@@ -14,6 +14,9 @@ app.use(cors());
 app.use(express.json()); // parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // parse URL-encoded bodies
 
+// ✅ Serve static files from uploads folder
+app.use('/uploads', express.static('uploads'));
+
 // ✅ Routes
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/tours', require('./routes/tours'));
