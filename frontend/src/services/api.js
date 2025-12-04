@@ -16,12 +16,12 @@ const apiUpload = axios.create({
 });
 
 // ====================
-// Tours API (unchanged)
+// Tours API
 // ====================
 export const getTours = () => api.get(`/tours`);
 export const getTourById = (id) => api.get(`/tours/${id}`);
-export const createTour = (data) => api.post(`/tours`, data);
-export const updateTour = (id, data) => api.put(`/tours/${id}`, data);
+export const createTour = (data) => apiUpload.post(`/tours`, data); // Use FormData for upload
+export const updateTour = (id, data) => apiUpload.put(`/tours/${id}`, data); // Use FormData for upload
 export const deleteTour = (id) => api.delete(`/tours/${id}`);
 
 // ====================
