@@ -19,7 +19,7 @@ import PrivateRoute from './components/PrivateRoute';
 import AdminTours from "./pages/AdminTours";
 import AdminRentals from "./pages/AdminRentals";
 import AdminPackages from "./pages/AdminPackages";
-
+import AdminGallerys from "./pages/AdminGallerys"; // New import for AdminGallerys
 
 // Animated routes
 function AnimatedRoutes() {
@@ -40,6 +40,7 @@ function AnimatedRoutes() {
         <Route path="/admin/tours" element={<PrivateRoute> <AdminTours /></PrivateRoute>  }/>
         <Route path="/admin/rentals" element={<PrivateRoute> <AdminRentals /></PrivateRoute> }/>
         <Route path="/admin/packages" element={<PrivateRoute> <AdminPackages /></PrivateRoute> }/>
+        <Route path="/admin/gallery" element={<PrivateRoute> <AdminGallerys /></PrivateRoute> }/> {/* New route for AdminGallerys */}
       </Routes>
       <WhatsAppButton />
     </AnimatePresence>

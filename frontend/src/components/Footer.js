@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Footer = () => {
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false); // State to track admin login status
+
+  // Effect to check admin login status from localStorage
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    setIsAdminLoggedIn(!!token);
+  }, []); // Run once on mount, as it doesn't depend on location changes
+
   return (
     <footer className="bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-300 relative overflow-hidden">
 
@@ -23,7 +31,7 @@ const Footer = () => {
             transition={{ duration: 0.4 }}
           >
             <h3 className="text-3xl font-bold text-green-500 mb-4">
-              Priyankara Tours & Transport
+              muthugala Tours & Transport
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
               Trusted tour and transport partner in Sri Lanka. 
@@ -104,7 +112,7 @@ const Footer = () => {
               <li>
                 <p className="font-medium">📧 Email</p>
                 <p className="text-gray-600 dark:text-gray-400">
-                  priyankaratours@gmail.com
+                 tours@gmail.com
                 </p>
               </li>
 
@@ -127,7 +135,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-300 dark:border-gray-700 mt-10 pt-6 flex flex-col md:flex-row justify-between text-sm text-gray-500 dark:text-gray-400">
-          <p>© {new Date().getFullYear()} Priyankara Tours & Transport. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} a Tours & Transport. All Rights Reserved.</p>
 
           <div className="flex space-x-6 mt-2 md:mt-0">
             <Link className="hover:text-green-500 transition" to="/privacy">
@@ -139,6 +147,12 @@ const Footer = () => {
             <Link className="hover:text-green-500 transition" to="/contact">
               Contact
             </Link>
+            {/* Conditionally render Admin link only if not logged in */}
+            {!isAdminLoggedIn && (
+              <Link className="hover:text-green-500 transition" to="/admin/login">
+                🔐 Admin
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -8,6 +8,14 @@ const Tours = () => {
   const [tours, setTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState('all');
+  const [error, setError] = useState(null); // For error handling
+
+  // Backend URL for images (Strip /api from API_URL for static files)
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const BASE_URL = API_URL.replace('/api', ''); // e.g., 'http://localhost:5000'
+  const getImageUrl = (imagePath) => {
+    return imagePath ? `${BASE_URL}${imagePath}` : 'https://via.placeholder.com/400x256?text=No+Image';
+  };
 
   useEffect(() => {
     fetchTours();
@@ -15,76 +23,25 @@ const Tours = () => {
 
   const fetchTours = async () => {
     try {
-      // Attempt to fetch from API
+      setError(null); // Clear previous errors
+      console.log("Fetching tours from API..."); // Debug
       const response = await getTours();
-      setTours(response.data);
+      console.log("Tours fetched:", response.data); // Debug
+      setTours(response.data || []);
     } catch (error) {
-      console.log('Using fallback data');
-      
-      // 🔥 FALLBACK DATA with Real Images
-      setTours([
-        {
-          _id: '1',
-          title: 'Yala Leopard Safari',
-          image: 'https://images.unsplash.com/photo-1634547481136-193496c14170?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          description: 'Track the elusive leopards in their highest density kingdom. A thrilling 4x4 adventure through the thorny scrub jungle.',
-          duration: 'Full Day',
-          price: 15000,
-          location: 'Yala National Park',
-          difficulty: 'Easy',
-          maxParticipants: 6,
-          includes: ['Park Entry', 'Jeep', 'Lunch', 'Binoculars'],
-          bestTime: 'Early Morning',
-        },
-        {
-          _id: '2',
-          title: 'Udawalawe Elephant Gathering',
-          image: 'https://images.unsplash.com/photo-1581850518616-bcb8077a2536?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          description: 'Witness hundreds of Asian elephants in their natural habitat. Perfect for families and elephant lovers.',
-          duration: 'Half Day',
-          price: 8000,
-          location: 'Udawalawe',
-          difficulty: 'Easy',
-          maxParticipants: 8,
-          includes: ['Park Entry', 'Guide', 'Water'],
-          bestTime: 'Afternoon',
-        },
-        {
-          _id: '3',
-          title: 'Sinharaja Rainforest Trek',
-          image: 'https://images.unsplash.com/photo-1448375240586-dfd8d395ea6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          description: 'Walk through a UNESCO World Heritage site. Discover endemic birds, rare lizards, and the lush canopy of the rainforest.',
-          duration: 'Full Day',
-          price: 12000,
-          location: 'Sinharaja',
-          difficulty: 'Medium',
-          maxParticipants: 10,
-          includes: ['Leech Protection', 'Guide', 'Lunch'],
-          bestTime: 'Morning',
-        },
-        {
-          _id: '4',
-          title: 'Wilpattu Lakes & Leopards',
-          image: 'https://images.unsplash.com/photo-1541793855655-e46fa2d2a4c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-          description: 'Explore Sri Lanka\'s largest park, known for its natural sand rimmed lakes (Willus) and high leopard activity.',
-          duration: 'Full Day',
-          price: 18000,
-          location: 'Wilpattu',
-          difficulty: 'Medium',
-          maxParticipants: 6,
-          includes: ['Full Board', 'Luxury Jeep', 'Guide'],
-          bestTime: 'Full Day',
-        },
-      ]);
+      console.error('Error fetching tours:', error);
+      setError("Failed to load tours. Please try again later."); // User-friendly error
+      setTours([]); // Empty state
     } finally {
       setLoading(false);
     }
   };
 
-  const filters = ['all', 'easy', 'medium', 'hard'];
+  // Filters based on duration
+  const filters = ['all', 'Full Day', 'Half Day'];
   const filteredTours = selectedFilter === 'all'
     ? tours
-    : tours.filter((tour) => tour.difficulty.toLowerCase() === selectedFilter);
+    : tours.filter((tour) => tour.duration.toLowerCase().includes(selectedFilter.toLowerCase()));
 
   // Loading Screen
   if (loading) {
@@ -107,7 +64,7 @@ const Tours = () => {
         <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+              src="https://images.unsplash.com/photo-1516426426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
               alt="Safari Hero" 
               className="w-full h-full object-cover"
             />
@@ -159,6 +116,18 @@ const Tours = () => {
 
         {/* ================= TOURS GRID ================= */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-4">
+          {error && (
+            <div className="text-center py-8">
+              <p className="text-red-500 mb-4">{error}</p>
+              <button 
+                onClick={fetchTours} 
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Retry Fetch
+              </button>
+            </div>
+          )}
+          
           <motion.div 
             layout
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8"
@@ -176,9 +145,12 @@ const Tours = () => {
                 >
                   {/* Background Image */}
                   <img 
-                    src={tour.image} 
+                    src={getImageUrl(tour.image)} // Fixed: Use getImageUrl for full path
                     alt={tour.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/400x256?text=No+Image'; // Fallback
+                    }}
                   />
                   
                   {/* Overlay Gradient */}
@@ -187,14 +159,7 @@ const Tours = () => {
                   {/* Top Badges */}
                   <div className="absolute top-6 left-6 flex gap-2">
                     <span className="bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                      {tour.location}
-                    </span>
-                    <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border backdrop-blur-md
-                      ${tour.difficulty === 'Easy' ? 'bg-green-500/80 border-green-400 text-white' : 
-                        tour.difficulty === 'Medium' ? 'bg-yellow-500/80 border-yellow-400 text-white' : 
-                        'bg-red-500/80 border-red-400 text-white'}`}
-                    >
-                      {tour.difficulty}
+                      {tour.duration}
                     </span>
                   </div>
 
@@ -208,9 +173,9 @@ const Tours = () => {
                         {tour.description}
                       </p>
                       
-                      {/* Features Icons */}
+                      {/* Features Icons - Use includes */}
                       <div className="flex flex-wrap gap-3 mb-6">
-                        {tour.includes.slice(0, 3).map((item, idx) => (
+                        {(tour.includes || []).slice(0, 3).map((item, idx) => (
                           <span key={idx} className="text-xs text-gray-300 bg-white/10 px-2 py-1 rounded border border-white/10">
                             ✓ {item}
                           </span>
@@ -218,10 +183,14 @@ const Tours = () => {
                       </div>
                     </div>
 
-                    {/* Footer Row */}
+                    {/* Footer Row - Updated to show Max Participants and Price (not per person) */}
                     <div className="flex justify-between items-center mt-2 border-t border-white/20 pt-4">
                       <div className="flex flex-col">
-                        <span className="text-xs text-gray-400 uppercase">Per Person</span>
+                        <span className="text-xs text-gray-400 uppercase">Max Participants</span>
+                        <span className="text-lg font-bold text-green-400">{tour.maxParticipants}</span>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className="text-xs text-gray-400 uppercase">Group Price</span>
                         <span className="text-2xl font-bold text-green-400">LKR {tour.price.toLocaleString()}</span>
                       </div>
                       
@@ -241,11 +210,11 @@ const Tours = () => {
             </AnimatePresence>
           </motion.div>
 
-          {filteredTours.length === 0 && (
+          {filteredTours.length === 0 && !loading && (
             <div className="text-center py-24">
               <div className="text-6xl mb-4">🦁</div>
               <h3 className="text-2xl font-bold text-gray-600 dark:text-gray-400">No tours found</h3>
-              <p className="text-gray-500">Try changing your filter settings</p>
+              <p className="text-gray-500">Try changing your filter settings or add some tours in admin</p>
             </div>
           )}
         </section>

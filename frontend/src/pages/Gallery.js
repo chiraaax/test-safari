@@ -1,74 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getGallerys } from '../services/api'; // Import the API function
 import PageTransition from '../components/PageTransition';
 
 const Gallery = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [galleryItems, setGalleryItems] = useState([]); // Fetched data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Real Unsplash Images
-  const galleryImages = [
-    {
-      id: 1,
-      title: 'Majestic Tusker',
-      category: 'Wildlife',
-      image: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 2,
-      title: 'Leopard Gaze',
-      category: 'Wildlife',
-      image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 3,
-      title: 'Yala Golden Hour',
-      category: 'Scenery',
-      image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 4,
-      title: 'Safari Jeep Action',
-      category: 'Adventure',
-      image: 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 5,
-      title: 'Peacock Dance',
-      category: 'Birds',
-      image: 'https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 6,
-      title: 'Jungle Path',
-      category: 'Scenery',
-      image: 'https://images.unsplash.com/photo-1589656966895-2f33e7653819?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 7,
-      title: 'Guest Experience',
-      category: 'Guests',
-      image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 8,
-      title: 'Kingfisher',
-      category: 'Birds',
-      image: 'https://images.unsplash.com/photo-1444464666168-49d633b86797?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-    {
-      id: 9,
-      title: 'Morning Mist',
-      category: 'Scenery',
-      image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    },
-  ];
+  // Backend base URL for images
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const getImageUrl = (imagePath) => {
+    return imagePath ? `${API_URL}${imagePath}` : 'https://via.placeholder.com/400x300?text=No+Image';
+  };
 
-  const categories = ['All', 'Wildlife', 'Scenery', 'Birds', 'Adventure'];
-  
-  const filteredImages = selectedCategory === 'All' 
-    ? galleryImages 
-    : galleryImages.filter(img => img.category === selectedCategory);
+  // Fetch gallery items on mount
+  useEffect(() => {
+    fetchGalleryItems();
+  }, []);
+
+  const fetchGalleryItems = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getGallerys();
+      console.log('Fetched gallery items:', response.data); // Debug: Check data structure
+      setGalleryItems(response.data || []);
+    } catch (error) {
+      console.error('Error fetching gallery items:', error);
+      setError('Failed to load gallery. Please try refreshing the page.');
+      setGalleryItems([]); // Fallback to empty
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen flex items-center justify-center bg-gray-900">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+            className="text-6xl"
+          >
+            🖼️
+          </motion.div>
+        </div>
+      </PageTransition>
+    );
+  }
+
+  if (error) {
+    return (
+      <PageTransition>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+          <div className="text-center p-8">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button 
+              onClick={fetchGalleryItems} 
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </PageTransition>
+    );
+  }
 
   return (
     <PageTransition>
@@ -102,32 +102,6 @@ const Gallery = () => {
           </motion.div>
         </section>
 
-        {/* ================= FILTER SECTION ================= */}
-        <div className="sticky top-24 z-30 py-8 px-4 pointer-events-none">
-          <div className="max-w-7xl mx-auto flex justify-center pointer-events-auto">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 p-2 rounded-full shadow-lg flex flex-wrap justify-center gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`relative px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
-                    selectedCategory === cat ? 'text-white' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                  }`}
-                >
-                  {selectedCategory === cat && (
-                    <motion.div
-                      layoutId="activeGalleryFilter"
-                      className="absolute inset-0 bg-gradient-to-r from-orange-500 to-amber-600 rounded-full shadow-md"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                  <span className="relative z-10">{cat}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* ================= GALLERY GRID ================= */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
           <motion.div 
@@ -135,10 +109,10 @@ const Gallery = () => {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             <AnimatePresence>
-              {filteredImages.map((image) => (
+              {galleryItems.map((image) => ( // Use galleryItems directly (no filtering)
                 <motion.div
                   layout
-                  key={image.id}
+                  key={image._id} // Use _id from backend
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.5 }}
@@ -147,16 +121,20 @@ const Gallery = () => {
                   className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
                 >
                   <img 
-                    src={image.image} 
+                    src={getImageUrl(image.image)} // Use full backend URL
                     alt={image.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    onError={(e) => {
+                      console.error('Image load error:', image.image); // Debug
+                      e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+                    }}
                   />
                   
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
                     <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                       <span className="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full mb-2 inline-block">
-                        {image.category}
+                        {image.type} {/* Use 'type' from backend */}
                       </span>
                       <h3 className="text-2xl font-bold text-white">{image.title}</h3>
                       <p className="text-white/80 text-sm mt-2">Click to expand</p>
@@ -166,6 +144,14 @@ const Gallery = () => {
               ))}
             </AnimatePresence>
           </motion.div>
+
+          {galleryItems.length === 0 && !loading && (
+            <div className="text-center py-20 col-span-full">
+              <div className="text-5xl mb-4">🖼️</div>
+              <p className="text-gray-500 dark:text-gray-400 text-lg">No images in the gallery yet.</p>
+              <p className="text-sm text-gray-400 mt-2"><button onClick={fetchGalleryItems} className="text-blue-500 hover:underline">Refresh</button> or check with admin.</p>
+            </div>
+          )}
         </section>
 
         {/* ================= LIGHTBOX MODAL ================= */}
@@ -186,9 +172,13 @@ const Gallery = () => {
                 className="relative max-w-5xl w-full max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl"
               >
                 <img 
-                  src={selectedImage.image} 
+                  src={getImageUrl(selectedImage.image)} // Use full backend URL
                   alt={selectedImage.title}
                   className="w-full h-full object-contain max-h-[85vh] bg-black"
+                  onError={(e) => {
+                    console.error('Lightbox image error:', selectedImage.image); // Debug
+                    e.target.src = 'https://via.placeholder.com/800x600?text=No+Image';
+                  }}
                 />
                 
                 {/* Close Button */}
@@ -201,8 +191,9 @@ const Gallery = () => {
 
                 {/* Caption */}
                 <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent text-white">
-                  <span className="text-orange-400 font-bold text-sm uppercase tracking-wider">{selectedImage.category}</span>
-                  <h3 className="text-3xl font-bold">{selectedImage.title}</h3>
+                  <span className="text-orange-400 font-bold text-sm uppercase tracking-wider">{selectedImage.type}</span>
+                  <h3 className="text-3xl font-bold mt-1">{selectedImage.title}</h3>
+                  <p className="text-white/80 text-sm mt-2 line-clamp-2">{selectedImage.description}</p> {/* Use description from backend */}
                 </div>
               </motion.div>
             </motion.div>

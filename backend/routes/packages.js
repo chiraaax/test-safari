@@ -23,10 +23,24 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// CREATE a new package
+// CREATE a new package (handles FormData with image file)
 router.post('/', async (req, res) => {
-  const pkg = new Package(req.body);
   try {
+    const { name, description, duration, price, destinations, category, includes, highlights } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : null; // Store relative path
+
+    const pkg = new Package({
+      name,
+      image,
+      description,
+      duration,
+      price: Number(price),
+      destinations: destinations ? destinations.split(',').map(d => d.trim()) : [],
+      category,
+      includes: includes ? includes.split(',').map(i => i.trim()) : [],
+      highlights: highlights ? highlights.split(',').map(h => h.trim()) : [],
+    });
+
     const newPkg = await pkg.save();
     res.status(201).json(newPkg);
   } catch (err) {
@@ -34,10 +48,26 @@ router.post('/', async (req, res) => {
   }
 });
 
-// UPDATE a package
+// UPDATE a package (handles FormData with optional new image)
 router.put('/:id', async (req, res) => {
   try {
-    const updatedPkg = await Package.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updates = {
+      ...(req.body.name && { name: req.body.name }),
+      ...(req.body.description && { description: req.body.description }),
+      ...(req.body.duration && { duration: req.body.duration }),
+      ...(req.body.price && { price: Number(req.body.price) }),
+      ...(req.body.destinations && { destinations: req.body.destinations.split(',').map(d => d.trim()) }),
+      ...(req.body.category && { category: req.body.category }),
+      ...(req.body.includes && { includes: req.body.includes.split(',').map(i => i.trim()) }),
+      ...(req.body.highlights && { highlights: req.body.highlights.split(',').map(h => h.trim()) }),
+    };
+
+    // Handle image update if new file uploaded
+    if (req.file) {
+      updates.image = `/uploads/${req.file.filename}`;
+    }
+
+    const updatedPkg = await Package.findByIdAndUpdate(req.params.id, updates, { new: true });
     if (!updatedPkg) return res.status(404).json({ message: 'Package not found' });
     res.json(updatedPkg);
   } catch (err) {
