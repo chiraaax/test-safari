@@ -1,7 +1,7 @@
 {
-  "name": "muthugala-tours-backend",
+  "name": "yala-safari-crew-backend",
   "version": "1.0.0",
-  "description": "Backend API for Muthugala Tours",
+  "description": "Backend API for Yala Safari Crew",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

@@ -1,4 +1,4 @@
-# Quick Start Guide - Muthugala Tours
+# Quick Start Guide - Yala Safari Crew
 
 ## 🚀 Getting Started
 
@@ -17,7 +17,7 @@ cd backend
 2. Create a `.env` file (copy from `.env.example` if needed):
 ```
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/muthugala-tours
+MONGODB_URI=mongodb://localhost:27017/yala-safari-crew
 NODE_ENV=development
 ```
 
@@ -91,13 +91,13 @@ The frontend will automatically open in your browser at `http://localhost:3000`
 - Change the PORT in backend `.env` file
 - Update `REACT_APP_API_URL` in frontend `.env` accordingly
 
-Enjoy your Muthugala Tours web application! 🦁🚗📦
+Enjoy your Yala Safari Crew web application! 🦁🚗📦
 
 
 # Section 2
 __________________________________________________
 
-# How to Run and Test Muthugala Tours Application
+# How to Run and Test  Yala Safari Crew Application
 
 ## 📋 Prerequisites Check
 
@@ -135,13 +135,13 @@ New-Item .env -ItemType File
 
 # Or manually create a file named .env with this content:
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/muthugala-tours
+MONGODB_URI=mongodb://localhost:27017/yala-safari-crew
 NODE_ENV=development
 ```
 
 For MongoDB Atlas, use:
 ```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/muthugala-tours
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/yala-safari-crew
 ```
 
 #### Step 3: Start Backend Server
@@ -182,7 +182,7 @@ npm start
 ```
 Compiled successfully!
 
-You can now view muthugala-tours-frontend in the browser.
+You can now view yala-safari-crew-frontend in the browser.
 
   Local:            http://localhost:3000
   On Your Network:  http://192.168.x.x:3000
@@ -225,7 +225,7 @@ http://localhost:5000/api/health
 ```json
 {
   "status": "OK",
-  "message": "Muthugala Tours API is running"
+  "message": "Yala Safari Crew API is running"
 }
 ```
 

@@ -50,7 +50,7 @@ console.log('Server started - All routes loaded (including /api/gallery)'); // D
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Muthugala Tours API is running' });
+  res.json({ status: 'OK', message: 'Yala Safari Crew API is running' });
 });
 
 // Start server
