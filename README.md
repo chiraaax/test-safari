@@ -1,6 +1,6 @@
-# Muthugala Tours - Wildlife Safari Web Application
+# Yala Safari Crew - Wildlife Safari Web Application
 
-A full-stack MERN (MongoDB, Express, React, Node.js) web application for Muthugala Tours, a wildlife safari company offering tours, car rentals, and safari packages.
+A full-stack MERN (MongoDB, Express, React, Node.js) web application for Yala Safari Crew, a wildlife safari company offering tours, car rentals, and safari packages.
 
 ## Features
 
@@ -9,7 +9,7 @@ A full-stack MERN (MongoDB, Express, React, Node.js) web application for Muthuga
 - 📦 **Safari Packages**: All-inclusive safari packages for different needs
 - 📸 **Gallery**: View amazing safari experiences
 - 📞 **Contact**: Get in touch with the company
-- ℹ️ **About Us**: Learn about Muthugala Tours
+- ℹ️ **About Us**: Learn about Yala Safari Crew
 
 ## Tech Stack
 
@@ -47,7 +47,7 @@ npm install
 3. Create a `.env` file in the backend directory:
 ```
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/muthugala-tours
+MONGODB_URI=mongodb://localhost:27017/yala-safari-crew
 NODE_ENV=development
 ```
 

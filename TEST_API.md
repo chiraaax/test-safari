@@ -63,7 +63,7 @@ curl http://localhost:5000/api/packages
 ```json
 {
   "status": "OK",
-  "message": "Muthugala Tours API is running"
+  "message": "Yala Safari Crew API is running"
 }
 ```
 

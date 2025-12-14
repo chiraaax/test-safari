@@ -47,7 +47,7 @@ const About = () => {
           >
             <div className="backdrop-blur-md bg-white/10 dark:bg-black/30 border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-                About <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">Muthugala Tours</span>
+                About <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">Yala Safari Crew</span>
               </h1>
               <p className="text-lg md:text-2xl text-gray-100 font-light max-w-2xl mx-auto drop-shadow-md">
                 Crafting unforgettable wildlife journeys in the heart of Sri Lanka.
@@ -84,7 +84,7 @@ const About = () => {
               </h2>
               <div className="prose dark:prose-invert text-lg text-gray-600 dark:text-gray-300 space-y-4">
                 <p>
-                  Muthugala Tours began with a simple passion: to show the world the untamed beauty of Sri Lanka. What started as a small team of wildlife enthusiasts has grown into a premier safari operator.
+                  Yala Safari Crew began with a simple passion: to show the world the untamed beauty of Sri Lanka. What started as a small team of wildlife enthusiasts has grown into a premier safari operator.
                 </p>
                 <p>
                   We believe that a safari is more than just a drive; it's a connection with nature. From the majestic elephants of Udawalawe to the elusive leopards of Yala, we curate experiences that leave a lasting imprint on your soul.

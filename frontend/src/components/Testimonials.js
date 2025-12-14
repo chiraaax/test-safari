@@ -24,7 +24,7 @@ const Testimonials = () => {
       name: 'Emma Williams',
       location: 'Australia',
       rating: 5,
-      text: 'Best wildlife tour we\'ve ever taken! The team at Muthugala Tours made our trip unforgettable. The accommodation and transportation were top-notch.',
+      text: 'Best wildlife tour we\'ve ever taken! The team at Yala Safari Crew made our trip unforgettable. The accommodation and transportation were top-notch.',
       image: '👩',
     },
     {
