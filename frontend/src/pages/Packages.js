@@ -6,7 +6,8 @@ import PageTransition from '../components/PageTransition';
 const Packages = () => {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  // Removed selectedCategory state as the filter section is removed
+  // const [selectedCategory, setSelectedCategory] = useState('All');
 
   // Backend base URL for images
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
@@ -25,7 +26,7 @@ const Packages = () => {
   const fetchPackages = async () => {
     try {
       const response = await getPackages();
-      console.log('Fetched packages:', response.data); // Debug: Check if images are relative paths
+      console.log('Fetched packages:', response.data); 
       setPackages(response.data || []);
     } catch (error) {
       console.error('Error fetching packages:', error);
@@ -35,10 +36,8 @@ const Packages = () => {
     }
   };
 
-  const categories = ['All', 'Luxury', 'Family', 'Budget', 'Photography'];
-  const filteredPackages = selectedCategory === 'All'
-    ? packages
-    : packages.filter(pkg => pkg.category === selectedCategory);
+  // Display all packages since the filter is removed
+  const filteredPackages = packages; 
 
   if (loading) {
     return (
@@ -86,35 +85,14 @@ const Packages = () => {
           </motion.div>
         </section>
 
-        {/* ================= FILTER SECTION ================= */}
-        <div className="sticky top-24 z-30 py-6 px-4 pointer-events-none">
-          <div className="max-w-7xl mx-auto flex justify-center pointer-events-auto">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 p-2 rounded-full shadow-lg flex flex-wrap justify-center gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`relative px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
-                    selectedCategory === cat ? 'text-white' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                  }`}
-                >
-                  {selectedCategory === cat && (
-                    <motion.div
-                      layoutId="activePackageFilter"
-                      className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full shadow-md"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                  <span className="relative z-10">{cat}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* ================= FILTER SECTION REMOVED ================= */}
+        {/* The entire sticky filter div has been removed */}
 
         {/* ================= PACKAGES GRID ================= */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-4">
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        {/* Adjusted padding: changed 'pt-4' to 'pt-16' to add spacing below the hero */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-16">
+          {/* Changed grid from md:grid-cols-2 to lg:grid-cols-3 to make cards smaller */}
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence>
               {filteredPackages.map((pkg) => (
                 <motion.div
@@ -129,11 +107,11 @@ const Packages = () => {
                   {/* Image Header */}
                   <div className="relative h-72 overflow-hidden">
                     <img 
-                      src={getImageUrl(pkg.image)} // Fixed: Use full URL
+                      src={getImageUrl(pkg.image)} 
                       alt={pkg.name}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       onError={(e) => {
-                        console.error('Image load error:', pkg.image); // Debug
+                        console.error('Image load error:', pkg.image);
                         e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
                       }}
                     />
@@ -197,7 +175,7 @@ const Packages = () => {
                         <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                           LKR {pkg.price.toLocaleString()}
                         </div>
-                       
+                        
                       </div>
 
                       <a
@@ -218,7 +196,7 @@ const Packages = () => {
           {filteredPackages.length === 0 && (
             <div className="text-center py-20">
               <div className="text-5xl mb-4">📦</div>
-              <p className="text-gray-500">No packages found for this category.</p>
+              <p className="text-gray-500">No packages found.</p>
             </div>
           )}
         </section>
@@ -232,8 +210,8 @@ const Packages = () => {
                We specialize in tailor-made itineraries. Tell us your requirements, and we'll craft the perfect safari for you.
              </p>
              <a
-                href="/contact"
-                className="inline-block bg-white text-purple-900 font-bold px-10 py-4 rounded-full shadow-2xl hover:bg-gray-100 transition-colors"
+               href="/contact"
+               className="inline-block bg-white text-purple-900 font-bold px-10 py-4 rounded-full shadow-2xl hover:bg-gray-100 transition-colors"
              >
                Get a Custom Quote
              </a>

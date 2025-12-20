@@ -52,15 +52,24 @@ function App() {
     <ThemeProvider>
       <Router>
         <ScrollToTop />
-        <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-          <Navbar />
-          <main className="flex-grow pt-20">
-            <AnimatedRoutes />
-          </main>
-          <Footer />
-        </div>
+        <AppLayout />
       </Router>
     </ThemeProvider>
+  );
+}
+
+function AppLayout() {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
+  return (
+    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      <Navbar />
+      <main className={`flex-grow ${isHome ? 'pt-0' : 'pt-20'}`}>
+        <AnimatedRoutes />
+      </main>
+      <Footer />
+    </div>
   );
 }
 

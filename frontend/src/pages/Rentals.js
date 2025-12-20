@@ -6,7 +6,8 @@ import PageTransition from '../components/PageTransition';
 const Rentals = () => {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedType, setSelectedType] = useState('all');
+  // Removed selectedType state as the filter section is removed
+  // const [selectedType, setSelectedType] = useState('all');
 
   // WhatsApp Config
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94772217970";
@@ -35,10 +36,8 @@ const Rentals = () => {
     }
   };
 
-  const vehicleTypes = ['all', 'SUV', 'Van', 'Jeep', 'Luxury'];
-  const filteredRentals = selectedType === 'all'
-    ? rentals
-    : rentals.filter(rental => rental.vehicleType.toLowerCase() === selectedType.toLowerCase());
+  // The filtering logic is removed, as we will display all rentals
+  const filteredRentals = rentals; 
 
   if (loading) {
     return (
@@ -86,34 +85,13 @@ const Rentals = () => {
           </motion.div>
         </section>
 
-        {/* ================= FILTER SECTION ================= */}
-        <div className="sticky top-24 z-30 py-6 px-4 pointer-events-none">
-          <div className="max-w-7xl mx-auto flex justify-center pointer-events-auto">
-            <div className="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 p-2 rounded-full shadow-lg flex flex-wrap justify-center gap-2">
-              {vehicleTypes.map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setSelectedType(type)}
-                  className={`relative px-6 py-2 rounded-full text-sm font-semibold capitalize transition-colors duration-300 ${
-                    selectedType === type ? 'text-white' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                  }`}
-                >
-                  {selectedType === type && (
-                    <motion.div
-                      layoutId="activeRentalFilter"
-                      className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full shadow-md"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                    />
-                  )}
-                  <span className="relative z-10">{type}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* ================= FILTER SECTION REMOVED ================= 
+          (Removed the sticky top-24 filter bar entirely)
+        */}
 
         {/* ================= RENTALS GRID ================= */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-4">
+        {/* Adjusted padding: changed 'pt-4' to 'pt-16' to give some space below the hero */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-16"> 
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence>
               {filteredRentals.map((rental) => (
@@ -129,7 +107,7 @@ const Rentals = () => {
                   {/* Image Area */}
                   <div className="relative h-64 overflow-hidden">
                     <img 
-                      src={getImageUrl(rental.image)} // Fixed: Use getImageUrl for full path
+                      src={getImageUrl(rental.image)} 
                       alt={rental.vehicleName}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       onError={(e) => {
@@ -158,7 +136,7 @@ const Rentals = () => {
                     <div className="absolute bottom-4 left-4 text-white">
                       <h3 className="text-2xl font-bold drop-shadow-md">{rental.vehicleName}</h3>
                       <div className="flex items-center gap-3 text-xs opacity-90 mt-1 font-medium">
-                        <span className="bg-black/30 px-2 py-1 rounded">👥 {rental.seats} Seats</span> {/* Fixed: seats instead of capacity */}
+                        <span className="bg-black/30 px-2 py-1 rounded">👥 {rental.seats} Seats</span>
                         <span className="bg-black/30 px-2 py-1 rounded">⛽ {rental.fuel}</span>
                       </div>
                     </div>
@@ -172,7 +150,7 @@ const Rentals = () => {
 
                     {/* Features */}
                     <div className="flex flex-wrap gap-2 mb-6">
-                      {(rental.features || []).map((feature, idx) => ( // Fixed: Handle undefined features
+                      {(rental.features || []).map((feature, idx) => ( 
                         <span key={idx} className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-md font-medium">
                           {feature}
                         </span>
@@ -194,8 +172,8 @@ const Rentals = () => {
                         rel="noopener noreferrer"
                         className={`px-6 py-2 rounded-xl font-bold text-sm shadow-lg transition-all transform active:scale-95 ${
                           rental.available 
-                           ? "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-500/30"
-                           : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            ? "bg-blue-600 text-white hover:bg-blue-700 shadow-blue-500/30"
+                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
                         }`}
                         onClick={(e) => !rental.available && e.preventDefault()}
                       >
@@ -211,7 +189,7 @@ const Rentals = () => {
           {filteredRentals.length === 0 && (
             <div className="text-center py-20">
               <div className="text-5xl mb-4">🚙</div>
-              <p className="text-gray-500">No vehicles found in this category.</p>
+              <p className="text-gray-500">No vehicles found.</p>
             </div>
           )}
         </section>
