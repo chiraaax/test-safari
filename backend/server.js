@@ -45,6 +45,7 @@ app.use('/api/tours', upload.single('image'), require('./routes/tours'));
 app.use('/api/rentals', upload.single('image'), require('./routes/rentals'));
 app.use('/api/packages', upload.single('image'), require('./routes/packages'));
 app.use('/api/gallery', upload.single('image'), require('./routes/gallerys')); // Gallery route
+app.use('/api/contact', require('./routes/contact'));
 
 console.log('Server started - All routes loaded (including /api/gallery)'); // Debug
 

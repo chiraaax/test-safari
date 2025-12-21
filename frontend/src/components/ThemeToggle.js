@@ -1,52 +1,55 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useTheme } from '../context/ThemeContext';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sun, Moon } from "lucide-react";
 
 const ThemeToggle = () => {
-  const { theme, toggleTheme, isDark } = useTheme();
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   return (
-    <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
+    <button
       onClick={toggleTheme}
-      className="relative w-14 h-8 rounded-full bg-gray-300 dark:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-      aria-label="Toggle theme"
+      className="relative flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary-500/50 transition-all duration-300 focus:outline-none shadow-sm"
+      aria-label="Toggle Theme"
     >
-      <motion.div
-        className="absolute top-1 left-1 w-6 h-6 bg-white dark:bg-gray-200 rounded-full shadow-lg dark:shadow-gray-900/50 flex items-center justify-center"
-        animate={{
-          x: isDark ? 24 : 0,
-        }}
-        transition={{
-          type: 'spring',
-          stiffness: 500,
-          damping: 30,
-        }}
-      >
-        {isDark ? (
-          <motion.span
-            initial={{ rotate: -90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="text-yellow-500 text-sm"
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === "dark" ? (
+          <motion.div
+            key="moon"
+            initial={{ y: -20, opacity: 0, rotate: -90 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            exit={{ y: 20, opacity: 0, rotate: 90 }}
+            transition={{ duration: 0.2 }}
           >
-            🌙
-          </motion.span>
+            <Moon className="w-4 h-4 text-blue-400 fill-blue-400/20" />
+          </motion.div>
         ) : (
-          <motion.span
-            initial={{ rotate: 90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="text-yellow-500 text-sm"
+          <motion.div
+            key="sun"
+            initial={{ y: -20, opacity: 0, rotate: 90 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            exit={{ y: 20, opacity: 0, rotate: -90 }}
+            transition={{ duration: 0.2 }}
           >
-            ☀️
-          </motion.span>
+            <Sun className="w-4 h-4 text-amber-500 fill-amber-500/20" />
+          </motion.div>
         )}
-      </motion.div>
-    </motion.button>
+      </AnimatePresence>
+    </button>
   );
 };
 
 export default ThemeToggle;
-

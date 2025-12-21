@@ -1,459 +1,372 @@
-  import React, { useEffect, useRef, useState } from 'react';
-  import { Link } from 'react-router-dom';
-  import { motion, useInView, AnimatePresence } from 'framer-motion';
-  import Testimonials from '../components/Testimonials';
-  import Stats from '../components/Stats';
-  import Newsletter from '../components/Newsletter';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'framer-motion';
+import { 
+  Compass, Car, Map, ChevronRight, Star, ShieldCheck, 
+  Zap, HeartHandshake, ArrowRight, Play 
+} from 'lucide-react';
+import Testimonials from '../components/Testimonials';
+import Stats from '../components/Stats';
+import Newsletter from '../components/Newsletter';
 
-  const heroImages = [
-    "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80", // Elephant
-    "https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80", // Leopard/Cat
-    "https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80", // Jeep Safari
-    "https://images.unsplash.com/photo-1504221507732-5246c045949b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"  // Landscape
-  ];
+const heroImages = [
+  "/images/safari%20jeep.jpg", // Elephant
+  "/images/mirissabeach.jpg", // Leopard
+  "https://images.unsplash.com/photo-1535591273668-578e31182c4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80", // Jeep
+  "https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"  // Nature
+];
 
-  const Home = () => {
-    const heroRef = useRef(null);
-    const servicesRef = useRef(null);
-    const featuresRef = useRef(null);
-    
-    const [currentSlide, setCurrentSlide] = useState(0);
+const Home = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]); // Parallax effect
 
-    // Cycle through images every 5 seconds
-    useEffect(() => {
-      const timer = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-      }, 5000);
-      return () => clearInterval(timer);
-    }, []);
+  // Cycle images
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
-    const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
-    const servicesInView = useInView(servicesRef, { once: true, amount: 0.2 });
-    const featuresInView = useInView(featuresRef, { once: true, amount: 0.2 });
-
-    const containerVariants = {
-      hidden: { opacity: 0 },
-      visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.2 },
-      },
-    };
-
-    const itemVariants = {
-      hidden: { opacity: 0, y: 30 },
-      visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.6, ease: 'easeOut' },
-      },
-    };
-
-    return (
-      <div className="overflow-hidden">
-        {/* ================= HERO SECTION ================= */}
-        <section
-          ref={heroRef}
-          className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 pt-0"
-        >
-          {/* 1. Background Image Slider */}
-          <div className="absolute inset-0 z-0 top-0">
-            <AnimatePresence mode='wait'>
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1.5 }}
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${heroImages[currentSlide]})` }}
-              />
-            </AnimatePresence>
-            {/* Dark Overlay for readability */}
-            <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
-          </div>
-
-          {/* 2. Animated Blobs (Behind Glass) */}
-          <div className="absolute inset-0 overflow-hidden z-0 pointer-events-none">
-            <motion.div
-              className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/30 rounded-full blur-[100px]"
-              animate={{
-                x: [0, 100, 0],
-                y: [0, 50, 0],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-            />
-            <motion.div
-              className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-500/30 rounded-full blur-[100px]"
-              animate={{
-                x: [0, -100, 0],
-                y: [0, -50, 0],
-                scale: [1, 1.3, 1],
-              }}
-              transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          </div>
-
-          {/* 3. Liquid Glass Content Container */}
-          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 flex justify-center">
-            {heroInView && (
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="w-full max-w-4xl"
-              >
-                {/* GLASS CARD START */}
-                <div className="backdrop-blur-xl bg-white/10 dark:bg-black/20 border border-white/20 shadow-2xl rounded-3xl p-8 md:p-12 text-center overflow-hidden relative">
-                  
-                  {/* Glossy Reflection Effect */}
-                  <div className="absolute -top-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-
-                  <motion.div variants={itemVariants}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.2 }}
-                      className="inline-block mb-4 px-4 py-1 rounded-full border border-white/30 bg-white/5 backdrop-blur-md"
-                    >
-                      <span className="text-primary-100 text-sm md:text-base font-semibold tracking-widest uppercase drop-shadow-md">
-                        Premium Wildlife Safari Experiences
-                      </span>
-                    </motion.div>
-                  </motion.div>
-
-                  <motion.div variants={itemVariants}>
-                    <motion.h1
-                      className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-lg"
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8, delay: 0.3 }}
-                    >
-                      Discover Sri Lanka's
-                      <br />
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-white filter drop-shadow-lg">
-                        Wild Wonders
-                      </span>
-                    </motion.h1>
-                  </motion.div>
-
-                  <motion.p
-                    variants={itemVariants}
-                    className="text-lg md:text-xl lg:text-2xl mb-10 text-gray-100 font-light max-w-2xl mx-auto leading-relaxed drop-shadow-md"
-                  >
-                    Embark on unforgettable safari adventures with expert guides,
-                    luxury accommodations, and exclusive wildlife encounters.
-                  </motion.p>
-
-                  <motion.div
-                    variants={itemVariants}
-                    className="flex flex-col sm:flex-row gap-5 justify-center items-center"
-                  >
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Link
-                        to="/tours"
-                        className="btn-primary text-lg px-8 py-3 rounded-xl shadow-lg shadow-primary-900/50 border border-transparent hover:border-primary-400 transition-all"
-                      >
-                        Explore Our Tours
-                      </Link>
-                    </motion.div>
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Link
-                        to="/packages"
-                        className="bg-white/10 backdrop-blur-md border border-white/40 text-white text-lg px-8 py-3 rounded-xl hover:bg-white/20 transition-all shadow-lg"
-                      >
-                        View Packages
-                      </Link>
-                    </motion.div>
-                  </motion.div>
-
-                  {/* Trust Indicators inside Glass */}
-                  <motion.div
-                    variants={itemVariants}
-                    className="mt-12 pt-8 border-t border-white/10 flex flex-wrap justify-center items-center gap-6 md:gap-12 text-gray-200 text-sm font-medium"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent-300 text-xl">✓</span>
-                      <span className="drop-shadow-sm">15+ Years Experience</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent-300 text-xl">✓</span>
-                      <span className="drop-shadow-sm">50K+ Happy Customers</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent-300 text-xl">✓</span>
-                      <span className="drop-shadow-sm">Expert Guides</span>
-                    </div>
-                  </motion.div>
-                </div> 
-                {/* GLASS CARD END */}
-              </motion.div>
-            )}
-          </div>
-
-          {/* Scroll Indicator */}
-          <motion.div
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center backdrop-blur-sm bg-black/10">
-              <motion.div
-                className="w-1 h-3 bg-white rounded-full mt-2"
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </div>
-          </motion.div>
-        </section>
-
-        {/* Stats Section */}
-        <Stats />
-
-        {/* Features Section */}
-        <section ref={servicesRef} className="section-padding bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800 dark:text-white">
-                Our <span className="text-gradient">Premium Services</span>
-              </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                Experience the best of Sri Lankan wildlife with our expertly curated services
-              </p>
-            </motion.div>
-
-            {servicesInView && (
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12"
-              >
-                {[
-                  {
-                    icon: '🦁',
-                    title: 'Wildlife Safari Tours',
-                    description:
-                      'Discover amazing wildlife in their natural habitat with our expert guides and premium safari experiences. From leopards to elephants, witness nature\'s greatest spectacles.',
-                    link: '/tours',
-                    gradient: 'from-orange-500 to-red-600',
-                    features: ['Expert Guides', 'Premium Vehicles', 'Guaranteed Sightings'],
-                  },
-                  {
-                    icon: '🚗',
-                    title: 'Luxury Car Rentals',
-                    description:
-                      'Comfortable and reliable transportation for your safari adventures with our modern fleet of 4WD vehicles, SUVs, and luxury jeeps.',
-                    link: '/rentals',
-                    gradient: 'from-blue-500 to-cyan-600',
-                    features: ['4WD Vehicles', 'GPS Navigation', '24/7 Support'],
-                  },
-                  {
-                    icon: '📦',
-                    title: 'All-Inclusive Packages',
-                    description:
-                      'Comprehensive safari packages designed for the ultimate experience with luxury accommodations, meals, and exclusive wildlife encounters.',
-                    link: '/packages',
-                    gradient: 'from-purple-500 to-pink-600',
-                    features: ['Luxury Stays', 'All Meals', 'Full Support'],
-                  },
-                ].map((service, index) => (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    whileHover={{ y: -15, scale: 1.02 }}
-                    className="card-premium p-8 text-center group cursor-pointer h-full flex flex-col bg-white dark:bg-gray-800/90 border-gray-200 dark:border-gray-700/50"
-                  >
-                    <motion.div
-                      className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center text-5xl shadow-lg transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}
-                      whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {service.icon}
-                    </motion.div>
-                    <h3 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed flex-grow">
-                      {service.description}
-                    </p>
-                    <div className="mb-6">
-                      <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Includes:</p>
-                      <div className="flex flex-wrap justify-center gap-2">
-                        {service.features.map((feature, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-medium"
-                          >
-                            {feature}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <Link
-                      to={service.link}
-                      className="inline-flex items-center justify-center text-primary-600 dark:text-primary-400 font-semibold group-hover:text-primary-700 dark:group-hover:text-primary-300 transition-colors"
-                    >
-                      Learn More
-                      <motion.span
-                        className="ml-2"
-                        animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      >
-                        →
-                      </motion.span>
-                    </Link>
-                  </motion.div>
-                ))}
-              </motion.div>
-            )}
-          </div>
-        </section>
-
-        {/* Why Choose Us Section */}
-        <section ref={featuresRef} className="section-padding bg-white dark:bg-gray-900">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800 dark:text-white">
-                Why Choose <span className="text-gradient">Yala Safari Crew?</span>
-              </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                We provide exceptional experiences that create lasting memories
-              </p>
-            </motion.div>
-
-            {featuresInView && (
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-              >
-                {[
-                  {
-                    icon: '⭐',
-                    title: 'Expert Guides',
-                    description: 'Experienced wildlife experts with deep knowledge',
-                    color: 'text-yellow-500',
-                    bg: 'bg-yellow-50',
-                  },
-                  {
-                    icon: '🛡️',
-                    title: 'Safe & Secure',
-                    description: 'Your safety is our top priority',
-                    color: 'text-blue-500',
-                    bg: 'bg-blue-50',
-                  },
-                  {
-                    icon: '💰',
-                    title: 'Best Prices',
-                    description: 'Competitive pricing with no hidden costs',
-                    color: 'text-green-500',
-                    bg: 'bg-green-50',
-                  },
-                  {
-                    icon: '❤️',
-                    title: 'Memorable Experience',
-                    description: 'Unforgettable adventures guaranteed',
-                    color: 'text-red-500',
-                    bg: 'bg-red-50',
-                  },
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className={`text-center p-8 rounded-2xl ${feature.bg} dark:bg-gray-800/70 border-2 border-transparent hover:border-primary-200 dark:hover:border-primary-600/50 hover:shadow-xl dark:hover:shadow-primary-900/20 transition-all duration-300`}
-                  >
-                    <motion.div
-                      className={`text-6xl mb-4 ${feature.color}`}
-                      whileHover={{ rotate: [0, -10, 10, 0] }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {feature.icon}
-                    </motion.div>
-                    <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </motion.div>
-                ))}
-              </motion.div>
-            )}
-          </div>
-        </section>
-
-        {/* Testimonials */}
-        <Testimonials />
-
-        {/* CTA Section */}
-        <section className="section-padding bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="absolute inset-0">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-400/10 rounded-full blur-3xl"></div>
-          </div>
-          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Ready for Your Adventure?
-              </h2>
-              <p className="text-xl text-primary-100 dark:text-gray-200 mb-8 max-w-2xl mx-auto">
-                Book your safari experience today and create memories that last a lifetime.
-                Our expert team is ready to make your wildlife dreams come true.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    to="/contact"
-                    className="bg-white text-primary-600 px-10 py-4 rounded-lg font-semibold text-lg shadow-2xl hover:shadow-3xl inline-block transition-all duration-300"
-                  >
-                    Get Started Now
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link
-                    to="/tours"
-                    className="bg-primary-800/50 backdrop-blur-sm text-white border-2 border-white/30 px-10 py-4 rounded-lg font-semibold text-lg hover:bg-primary-800/70 inline-block transition-all duration-300"
-                  >
-                    Browse Tours
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Newsletter */}
-        <Newsletter />
-      </div>
-    );
+  // Animation Variants
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
-  export default Home;
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 }
+    }
+  };
+
+  return (
+    <div className="overflow-x-hidden bg-white dark:bg-gray-950" ref={containerRef}>
+      
+      {/* ================= HERO SECTION ================= */}
+      <section className="relative h-[110vh] flex items-center justify-center overflow-hidden">
+        
+        {/* Background Slider with Parallax */}
+        <motion.div style={{ y }} className="absolute inset-0 z-0">
+          <AnimatePresence mode='wait'>
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 2 }}
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${heroImages[currentSlide]})` }}
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-gray-950" />
+        </motion.div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center mt-[-10vh]">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+            className="max-w-4xl"
+          >
+            {/* Badge */}
+            <motion.div variants={fadeInUp} className="flex justify-center mb-6">
+              <span className="px-5 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white text-sm font-medium tracking-[0.2em] uppercase shadow-lg">
+                The Ultimate Sri Lankan Safari
+              </span>
+            </motion.div>
+
+            {/* Main Title */}
+            <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight mb-8 tracking-tight">
+              Wilderness <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-emerald-400">
+                Reimagined
+              </span>
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p variants={fadeInUp} className="text-lg md:text-xl text-gray-200 font-light mb-10 max-w-2xl mx-auto leading-relaxed">
+              Experience the untamed beauty of Yala National Park with bespoke luxury tours, expert guides, and premium comfort.
+            </motion.p>
+
+            {/* Buttons */}
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+              <Link 
+                to="/tours" 
+                className="group relative px-8 py-4 bg-primary-600 text-white rounded-full font-bold text-lg overflow-hidden shadow-xl shadow-primary-900/30 transition-all hover:scale-105 hover:shadow-2xl"
+              >
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                <span className="relative flex items-center gap-2">
+                  Explore Tours <Compass className="w-5 h-5" />
+                </span>
+              </Link>
+              
+              <Link 
+                to="/gallery" 
+                className="group px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 text-white rounded-full font-semibold text-lg hover:bg-white/20 transition-all flex items-center gap-3"
+              >
+                <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Play className="w-3 h-3 fill-current ml-0.5" />
+                </div>
+                Watch Film
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          transition={{ delay: 2, duration: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/50"
+        >
+          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          <div className="w-[1px] h-16 bg-gradient-to-b from-white to-transparent" />
+        </motion.div>
+      </section>
+
+      {/* ================= STATS SECTION ================= */}
+      <div className="relative z-20 -mt-20">
+         <Stats />
+      </div>
+
+      {/* ================= SERVICES SECTION ================= */}
+      <section className="relative py-24 bg-gray-50 dark:bg-gray-900/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              Curated <span className="text-primary-600">Experiences</span>
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              We don't just offer tours; we craft journeys. Choose how you want to explore the wild.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <ServiceCard 
+              icon={<Compass className="w-8 h-8" />}
+              title="Wildlife Safaris"
+              desc="Expert-led expeditions into the heart of Yala to spot leopards and elephants."
+              link="/tours"
+              color="bg-amber-500"
+              img="https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&q=80&w=800"
+            />
+            <ServiceCard 
+              icon={<Car className="w-8 h-8" />}
+              title="Luxury Rentals"
+              desc="Premium 4x4 fleet tailored for comfort and photography during your ride."
+              link="/rentals"
+              color="bg-blue-600"
+              img="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800"
+            />
+            <ServiceCard 
+              icon={<Map className="w-8 h-8" />}
+              title="Tour Packages"
+              desc="All-inclusive itineraries featuring luxury stays and exclusive access."
+              link="/packages"
+              color="bg-emerald-600"
+              img="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&q=80&w=800"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ================= WHY CHOOSE US ================= */}
+      <section className="py-24 bg-white dark:bg-gray-950 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            
+            {/* Left Content */}
+            <div className="lg:w-1/2">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-sm font-semibold mb-6">
+                  <Star className="w-4 h-4 fill-current" /> Why Choose Us
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                  We turn moments into <br/>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-purple-600">
+                    Memories.
+                  </span>
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                  With over 15 years of experience in Yala National Park, we prioritize safety, comfort, and ethical wildlife tracking to ensure you get the perfect shot without disturbing nature.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <FeatureItem 
+                    icon={ShieldCheck} 
+                    title="100% Safe" 
+                    desc="Certified guides & insured vehicles." 
+                  />
+                  <FeatureItem 
+                    icon={HeartHandshake} 
+                    title="Ethical Tours" 
+                    desc="Respecting wildlife boundaries." 
+                  />
+                  <FeatureItem 
+                    icon={Zap} 
+                    title="Fast Booking" 
+                    desc="Instant confirmation online." 
+                  />
+                  <FeatureItem 
+                    icon={Star} 
+                    title="Top Rated" 
+                    desc="5-Star reviews on TripAdvisor." 
+                  />
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right Visual */}
+            <div className="lg:w-1/2 relative">
+               <motion.div
+                 initial={{ opacity: 0, scale: 0.8 }}
+                 whileInView={{ opacity: 1, scale: 1 }}
+                 viewport={{ once: true }}
+                 transition={{ duration: 0.8 }}
+                 className="relative z-10"
+               >
+                 <div className="grid grid-cols-2 gap-4">
+                   <img 
+                    src="https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&q=80&w=600" 
+                    alt="Jeep" 
+                    className="rounded-3xl shadow-2xl w-full h-64 object-cover transform translate-y-12"
+                   />
+                   <img 
+                    src="https://images.unsplash.com/photo-1629738012217-0639e763f036?auto=format&fit=crop&q=80&w=600" 
+                    alt="Leopard" 
+                    className="rounded-3xl shadow-2xl w-full h-64 object-cover"
+                   />
+                 </div>
+                 
+                 {/* Decorative elements */}
+                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary-500/10 rounded-full blur-3xl" />
+                 <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
+               </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= TESTIMONIALS ================= */}
+      <Testimonials />
+
+      {/* ================= CTA SECTION ================= */}
+      <section className="relative py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-gray-900">
+          <img 
+            src="https://images.unsplash.com/photo-1518182170546-0766aa6f6b0f?auto=format&fit=crop&q=80&w=1920" 
+            alt="CTA Background" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent" />
+        </div>
+
+        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-6xl font-bold text-white mb-6"
+          >
+            The Wild is Calling. <br/> Will You Answer?
+          </motion.h2>
+          <motion.p 
+             initial={{ opacity: 0, y: 20 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+             transition={{ delay: 0.1 }}
+             className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto"
+          >
+            Seats fill up fast during the season. Secure your spot today for an adventure you'll never forget.
+          </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <Link 
+              to="/contact" 
+              className="inline-flex items-center gap-3 bg-white text-gray-900 px-10 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition-colors shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
+            >
+              Start Your Adventure <ArrowRight className="w-5 h-5" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      <Newsletter />
+    </div>
+  );
+};
+
+// --- SUB-COMPONENTS FOR CLEANER CODE ---
+
+const ServiceCard = ({ icon, title, desc, link, color, img }) => (
+  <motion.div 
+    variants={{
+      hidden: { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0 }
+    }}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    className="group relative h-96 rounded-3xl overflow-hidden cursor-pointer"
+  >
+    {/* Background Image */}
+    <div className="absolute inset-0">
+      <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+    </div>
+
+    {/* Content */}
+    <div className="absolute inset-0 p-8 flex flex-col justify-end items-start text-white">
+      <div className={`w-14 h-14 rounded-2xl ${color} flex items-center justify-center mb-4 text-white shadow-lg transform group-hover:-translate-y-2 transition-transform duration-300`}>
+        {icon}
+      </div>
+      <h3 className="text-2xl font-bold mb-2 group-hover:text-primary-300 transition-colors">{title}</h3>
+      <p className="text-gray-300 mb-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75">
+        {desc}
+      </p>
+      <Link 
+        to={link} 
+        className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:gap-3 transition-all"
+      >
+        View Details <ChevronRight className="w-4 h-4" />
+      </Link>
+    </div>
+  </motion.div>
+);
+
+const FeatureItem = ({ icon: Icon, title, desc }) => (
+  <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+    <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 flex items-center justify-center">
+      <Icon className="w-6 h-6" />
+    </div>
+    <div>
+      <h4 className="font-bold text-gray-900 dark:text-white">{title}</h4>
+      <p className="text-sm text-gray-500 dark:text-gray-400">{desc}</p>
+    </div>
+  </div>
+);
+
+export default Home;

@@ -1,0 +1,16 @@
+{
+  "short_name": "Yala Safari",
+  "name": "Yala Safari Crew - Wildlife Safari Adventures",
+  "icons": [
+    {
+      "src": "images/YalaTravelCrew3.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#000000"
+}
