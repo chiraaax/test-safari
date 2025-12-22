@@ -35,7 +35,6 @@ const Tours = () => {
     }
   };
 
-  // --- LOADING STATE ---
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950">
@@ -56,24 +55,23 @@ const Tours = () => {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
         
         {/* ================= HERO SECTION ================= */}
-        {/* CHANGED: Added '-mt-20' to pull section up behind navbar. 
-            Adjust '20' (5rem/80px) to match your specific navbar height if needed. */}
-        <section className="relative top-0 -mt-20 pt-0 h-[60vh] flex items-center justify-center overflow-hidden">
+        {/* FIXED: Removed h-[-6vh], added -mt-20 to ignore nav space, added h-[70vh] */}
+        <section className="relative -mt-20 h-[60vh] md:h-[70vh] w-full flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
               src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
               alt="Safari Hero" 
-              className="w-full h-full object-cover transform scale-105"
+              className="w-full h-full object-cover"
             />
-            {/* Gradient Overlay for Text Readability */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-gray-900/90" />
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-gray-50 dark:to-gray-950" />
           </div>
 
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="relative z-10 text-center px-4"
+            className="relative z-10 text-center px-4 pt-20" // pt-20 accounts for the navbar height
           >
             <span className="inline-block py-1 px-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium tracking-[0.2em] uppercase mb-4">
               Wilderness Awaits
@@ -88,10 +86,8 @@ const Tours = () => {
         </section>
 
         {/* ================= TOURS GRID ================= */}
-        {/* Note: Kept -mt-20 here to overlap the hero, make sure this doesn't need adjustment if you changed the hero height */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 -mt-20 relative z-20">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 -mt-16 relative z-20">
           
-          {/* Error Message */}
           {error && (
             <div className="flex flex-col items-center justify-center py-12 text-center bg-white dark:bg-gray-800 rounded-2xl shadow-xl mb-10">
               <AlertCircle className="w-10 h-10 text-red-500 mb-3" />
@@ -120,7 +116,6 @@ const Tours = () => {
                 >
                   <Link to={`/tour/${tour._id}`} className="block h-full flex flex-col">
                     
-                    {/* Image Container */}
                     <div className="relative h-64 overflow-hidden">
                       <img 
                         src={getImageUrl(tour.image)}
@@ -132,7 +127,6 @@ const Tours = () => {
                       />
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
                       
-                      {/* Floating Badge */}
                       <div className="absolute top-4 left-4">
                         <div className="flex items-center gap-1.5 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg">
                           <Clock className="w-3.5 h-3.5 text-primary-600 dark:text-primary-400" />
@@ -143,9 +137,7 @@ const Tours = () => {
                       </div>
                     </div>
 
-                    {/* Content Body */}
                     <div className="p-8 flex flex-col flex-grow relative">
-                      {/* Hover Slide Up Effect bg */}
                       <div className="absolute inset-0 bg-primary-50/50 dark:bg-gray-800/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                       <div className="relative z-10 flex flex-col h-full">
@@ -178,7 +170,6 @@ const Tours = () => {
             </AnimatePresence>
           </motion.div>
 
-          {/* Empty State */}
           {tours.length === 0 && !loading && !error && (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">

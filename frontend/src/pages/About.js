@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   Users, Target, Shield, Heart, Leaf, Award, 
-  Map, ChevronRight, CheckCircle2 
+  ChevronRight, CheckCircle2 
 } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 
@@ -28,14 +28,21 @@ const About = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-white dark:bg-gray-950 overflow-hidden">
+      {/* FIX 1: Removed 'overflow-hidden' from this main wrapper. 
+         If kept, it clips the image when we pull it up with negative margin. 
+      */}
+      <div className="min-h-screen bg-white dark:bg-gray-950">
         
         {/* ================= HERO SECTION ================= */}
-        <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        {/* FIX 2: Added '-mt-[80px]'. 
+           This pulls the section up by 80px (standard navbar height) to go BEHIND the navbar.
+           Adjust 80px if your navbar is taller/shorter.
+        */}
+        <section className="relative h-[70vh] flex items-center justify-center overflow-hidden -mt-[80px]">
           {/* Parallax Background */}
           <div className="absolute inset-0 z-0">
             <img 
-              src="https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+              src="/images/ultimate-wildlife.jpg" 
               alt="Safari Landscape" 
               className="w-full h-full object-cover"
             />
@@ -44,11 +51,14 @@ const About = () => {
           </div>
 
           {/* Hero Content */}
+          {/* FIX 3: Added 'pt-[100px]'. 
+             This pushes the text down so it is visible below the navbar. 
+          */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative z-10 max-w-5xl mx-auto px-4 text-center"
+            className="relative z-10 max-w-5xl mx-auto px-4 text-center pt-[100px]"
           >
             <span className="inline-block py-1 px-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium tracking-widest uppercase mb-4">
               Since 2010
@@ -63,7 +73,7 @@ const About = () => {
         </section>
 
         {/* ================= MAIN CONTENT ================= */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 overflow-hidden">
           
           {/* SECTION 1: OUR STORY */}
           <motion.div 
