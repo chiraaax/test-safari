@@ -60,7 +60,6 @@ const Contact = () => {
   };
 
   const handleNavigate = () => {
-    // Opens Google Maps Directions to Tissamaharama (Yala Base)
     window.open("https://www.google.com/maps/dir/?api=1&destination=Tissamaharama,+Sri+Lanka", "_blank");
   };
 
@@ -83,7 +82,8 @@ const Contact = () => {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
 
         {/* ================= HERO SECTION ================= */}
-        <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+        {/* FIXED: Added -mt-20 to pull section up behind navbar and set proper height */}
+        <section className="relative -mt-20 h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img
               src="/images/yala.jpg"
@@ -99,7 +99,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="relative z-10 text-center px-4 mt-10"
+            className="relative z-10 text-center px-4 pt-20" // pt-20 keeps text visible below nav
           >
             <div className="backdrop-blur-md bg-white/10 dark:bg-black/40 border border-white/20 p-8 md:p-12 rounded-[2rem] shadow-2xl inline-block max-w-3xl">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
@@ -202,7 +202,6 @@ const Contact = () => {
             {/* RIGHT COLUMN: INFO & MAP */}
             <motion.div variants={fadeInUp} className="space-y-8 flex flex-col h-full">
               
-              {/* Contact Info Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-md hover:shadow-lg transition-shadow">
                   <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 text-green-600 dark:text-green-400">
@@ -221,10 +220,8 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Map Section */}
               <div className="flex-grow bg-white dark:bg-gray-900 p-2 rounded-[2rem] shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col">
                  <div className="relative w-full h-64 md:h-full min-h-[300px] rounded-3xl overflow-hidden">
-                    {/* Google Map Embed for Tissamaharama */}
                     <iframe 
                       title="Location Map"
                       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63426.68783688126!2d81.26189565!3d6.2845672!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae69c27278292c3%3A0x6735c34537160911!2sTissamaharama!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
@@ -238,7 +235,6 @@ const Contact = () => {
                     ></iframe>
                  </div>
 
-                 {/* Location Details & Navigate Button */}
                  <div className="p-6">
                     <div className="flex items-start justify-between">
                        <div>

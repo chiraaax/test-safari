@@ -6,16 +6,15 @@ import PageTransition from '../components/PageTransition';
 const Rentals = () => {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
-  // Removed selectedType state as the filter section is removed
-  // const [selectedType, setSelectedType] = useState('all');
 
   // WhatsApp Config
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+94772217970";
   const formattedNumber = whatsappNumber.replace(/[^0-9]/g, '');
 
-  // Backend URL for images (Strip /api from API_URL for static files)
+  // Backend URL for images
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-  const BASE_URL = API_URL.replace('/api', ''); // e.g., 'http://localhost:5000'
+  const BASE_URL = API_URL.replace('/api', ''); 
+  
   const getImageUrl = (imagePath) => {
     return imagePath ? `${BASE_URL}${imagePath}` : '/placeholder.jpg';
   };
@@ -30,13 +29,12 @@ const Rentals = () => {
       setRentals(response.data || []);
     } catch (error) {
       console.error("Error fetching rentals:", error);
-      setRentals([]); // no fallback
+      setRentals([]); 
     } finally {
       setLoading(false);
     }
   };
 
-  // The filtering logic is removed, as we will display all rentals
   const filteredRentals = rentals; 
 
   if (loading) {
@@ -58,21 +56,23 @@ const Rentals = () => {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         
         {/* ================= HERO SECTION ================= */}
-        <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+        {/* FIXED: Added -mt-20 and h-[60vh] to start from the very top */}
+        <section className="relative -mt-20 h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
               src="https://images.unsplash.com/photo-1506015391300-4802dc74de2e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
               alt="Safari Vehicle Hero" 
               className="w-full h-full object-cover"
             />
+            {/* Darker overlays for better navbar visibility */}
             <div className="absolute inset-0 bg-black/50" />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-50 dark:from-gray-900 via-transparent to-black/60" />
           </div>
 
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative z-10 text-center px-4"
+            className="relative z-10 text-center px-4 pt-20" // pt-20 pushes content down from under navbar
           >
             <div className="backdrop-blur-md bg-white/10 dark:bg-black/40 border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl inline-block max-w-3xl">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
@@ -85,13 +85,9 @@ const Rentals = () => {
           </motion.div>
         </section>
 
-        {/* ================= FILTER SECTION REMOVED ================= 
-          (Removed the sticky top-24 filter bar entirely)
-        */}
-
         {/* ================= RENTALS GRID ================= */}
-        {/* Adjusted padding: changed 'pt-4' to 'pt-16' to give some space below the hero */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-16"> 
+        {/* Adjusted padding and negative margin to pull grid slightly over hero if desired */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-16 relative z-20"> 
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence>
               {filteredRentals.map((rental) => (
@@ -111,7 +107,7 @@ const Rentals = () => {
                       alt={rental.vehicleName}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/400x256?text=No+Image'; // Fallback
+                        e.target.src = 'https://via.placeholder.com/400x256?text=No+Image';
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-60" />
@@ -157,7 +153,7 @@ const Rentals = () => {
                       ))}
                     </div>
 
-                    {/* Footer - Removed price, added contact info */}
+                    {/* Footer */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                       <div>
                         <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Ready to Rent</p>

@@ -6,8 +6,6 @@ import PageTransition from '../components/PageTransition';
 const Packages = () => {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
-  // Removed selectedCategory state as the filter section is removed
-  // const [selectedCategory, setSelectedCategory] = useState('All');
 
   // Backend base URL for images
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
@@ -26,17 +24,15 @@ const Packages = () => {
   const fetchPackages = async () => {
     try {
       const response = await getPackages();
-      console.log('Fetched packages:', response.data); 
       setPackages(response.data || []);
     } catch (error) {
       console.error('Error fetching packages:', error);
-      setPackages([]); // fallback: empty array
+      setPackages([]); 
     } finally {
       setLoading(false);
     }
   };
 
-  // Display all packages since the filter is removed
   const filteredPackages = packages; 
 
   if (loading) {
@@ -58,7 +54,8 @@ const Packages = () => {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         
         {/* ================= HERO SECTION ================= */}
-        <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
+        {/* FIXED: Added -mt-20 and h-[60vh] to start from the very top under the nav */}
+        <section className="relative -mt-20 h-[50vh] md:h-[60vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
               src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
@@ -66,17 +63,17 @@ const Packages = () => {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black/50" />
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-50 dark:from-gray-900 via-transparent to-black/40" />
           </div>
 
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative z-10 text-center px-4"
+            className="relative z-10 text-center px-4 pt-20" // pt-20 pushes content down so it's not hidden by navbar
           >
             <div className="backdrop-blur-md bg-white/10 dark:bg-black/40 border border-white/20 p-8 md:p-12 rounded-3xl shadow-2xl inline-block">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tight">
-                Curated <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Experiences</span>
+                Curated <span className="text-transparent bg-clip-text bg-gradient-r from-purple-400 to-pink-400">Experiences</span>
               </h1>
               <p className="text-lg text-gray-200">
                 All-inclusive safari packages tailored to your style
@@ -85,13 +82,8 @@ const Packages = () => {
           </motion.div>
         </section>
 
-        {/* ================= FILTER SECTION REMOVED ================= */}
-        {/* The entire sticky filter div has been removed */}
-
         {/* ================= PACKAGES GRID ================= */}
-        {/* Adjusted padding: changed 'pt-4' to 'pt-16' to add spacing below the hero */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-16">
-          {/* Changed grid from md:grid-cols-2 to lg:grid-cols-3 to make cards smaller */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 pt-16 relative z-20">
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence>
               {filteredPackages.map((pkg) => (
@@ -104,27 +96,23 @@ const Packages = () => {
                   transition={{ duration: 0.4 }}
                   className="group relative bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 flex flex-col"
                 >
-                  {/* Image Header */}
                   <div className="relative h-72 overflow-hidden">
                     <img 
                       src={getImageUrl(pkg.image)} 
                       alt={pkg.name}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       onError={(e) => {
-                        console.error('Image load error:', pkg.image);
                         e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent opacity-80" />
                     
-                    {/* Floating Badge */}
                     <div className="absolute top-4 right-4">
                       <span className="bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
                         {pkg.category}
                       </span>
                     </div>
 
-                    {/* Title & Duration */}
                     <div className="absolute bottom-4 left-6 text-white">
                       <h3 className="text-3xl font-bold mb-1 drop-shadow-md">{pkg.name}</h3>
                       <p className="flex items-center gap-2 text-sm opacity-90 font-medium">
@@ -135,15 +123,12 @@ const Packages = () => {
                     </div>
                   </div>
 
-                  {/* Body Content */}
                   <div className="p-8 flex-grow flex flex-col">
                     <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                       {pkg.description}
                     </p>
 
-                    {/* Grid of details */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                      {/* Includes */}
                       <div>
                         <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3 uppercase tracking-wider">Includes</h4>
                         <ul className="space-y-2">
@@ -155,7 +140,6 @@ const Packages = () => {
                         </ul>
                       </div>
                       
-                      {/* Highlights */}
                       <div>
                         <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3 uppercase tracking-wider">Highlights</h4>
                         <ul className="space-y-2">
@@ -168,14 +152,12 @@ const Packages = () => {
                       </div>
                     </div>
 
-                    {/* Footer / CTA */}
                     <div className="mt-auto pt-6 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
                       <div>
                         <span className="text-xs text-gray-400 uppercase tracking-wide">Total Price</span>
                         <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                           LKR {pkg.price.toLocaleString()}
                         </div>
-                        
                       </div>
 
                       <a
